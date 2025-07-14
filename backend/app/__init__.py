@@ -1,11 +1,13 @@
 from flask import Flask
+from app.routes.public_routes import public_blueprint
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+
+    app.register_blueprint(public_blueprint)
+
+    # @app.route("/")
+    # def hello_world():
+    #     return "<p>Hello, World!</p>"
 
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World!</p>"
-
-if __name__ == '__main__':
-    app.run(debug=True)

@@ -1,0 +1,1 @@
+def public_blueprint():
