@@ -3,11 +3,9 @@ from app.routes.public_routes import public_blueprint
 
 def create_app():
     app = Flask(__name__)
-
     app.register_blueprint(public_blueprint)
+    return app
 
-    # @app.route("/")
-    # def hello_world():
-    #     return "<p>Hello, World!</p>"
+# to use FAST API
 
 
