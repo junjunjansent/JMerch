@@ -1,14 +1,15 @@
 import psycopg2.extensions
 from app.utils.error_handler import APIError
 
-def create_user(connection: psycopg2.extensions.connection, cursor: psycopg2.extensions.cursor, data: dict) -> dict:
+# Use dict["key"] here because we dont want to search for None value if obtained via .get("key")
+
+def create_user(cursor: psycopg2.extensions.cursor, data: dict) -> dict:
     try: 
         # data = {"username": username, "email": email, "password": password}
-        cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s);", (data.get("username"), data.get("email"), data.get("password")))
-        connection.commit() # save changes
+        cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s);", (data["username"], data["email"], data["password"]))
 
         # find the last insertion
-        cursor.execute("SELECT id, username, email FROM users WHERE username = %s;", (data.get("username"),))
+        cursor.execute("SELECT id, username, email FROM users WHERE username = %s;", (data["username"],))
         return cursor.fetchone()
     except Exception as err:
         raise APIError(
@@ -35,41 +36,3 @@ def index_users(cursor: psycopg2.extensions.cursor)-> list[dict]:
     cursor.execute("SELECT id, username, profile_photo, created_at FROM users;")
     return cursor.fetchall()
 
-
-# @app.route('/bcrypt-sign-up', methods=['POST'])
-# def sign_up():
-#     # cannot do .values() because order may not be correct
-#     username = request.get_json().get('username')
-#     password = request.get_json().get('password')
-
-#     if not username or not password:
-#         return {"error": "Username & Password required"}, 401
-
-#     try: 
-#         connection = get_db_connection()
-#         cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
-#         # check username exists
-#         cursor.execute("SELECT * FROM users WHERE username = %s;", (username, ))
-#         existing_user = cursor.fetchone()
-#         if existing_user:
-#             return {"error": "Username already taken"}, 401
-#             # close in finally
-        
-#         # start hashing password
-#         hashed_password = hash_password(password)
-#         cursor.execute("INSERT INTO users (username, password) VALUES (%s, %s)", (username, hashed_password))
-#         connection.commit() # save changes
-
-#         # find the last insertion
-#         cursor.execute("SELECT id, username FROM users WHERE username = %s;", (username,))
-#         new_user = cursor.fetchone()
-
-#         return jsonify({"message": "Sign up route reached.", "data":  new_user}), 201
-#     except Exception as err:
-#         connection.rollback()
-#         print(err)
-#         return {"error": str(err)}, 401
-#     finally:
-#         cursor.close()
-#         connection.close()

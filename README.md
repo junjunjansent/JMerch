@@ -54,10 +54,33 @@ Full Stack
 - [ ] ? As a seller, I want to be able to see the existing uncompleted orders to my store and products in order to handle the product delivery timelines.
 - [ ] ? As a seller, I want to be informed of when certain product inventories are (user-defined) low in order to better manage my inventory
 
+### To Explore
+
+Backend Flask Techniques:
+
+- [x] [Modular Blueprints Video](https://www.youtube.com/watch?v=pjVhrIJFUEs)
+  - [x] [Modular Blueprints](https://flask.palletsprojects.com/en/stable/blueprints/)
+- [x] [Error Handling](https://flask.palletsprojects.com/en/stable/api/#flask.Flask.errorhandler)
+- [x] Connection & Cursor Handling
+- [x] [Faker Creation](https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html)
+- [ ] Separate Project - FastAPI (Pydantic) & SQLAlchemy
+- [ ] Marshmallow validating
+
+Database PostgreSQL Techniques:
+
+- [x] [LIKE & POSIX operator for PostgreSQL](https://www.postgresql.org/docs/current/functions-matching.html)
+
+Frontend Angular Techniques:
+
+- [ ] (Form Creation)
+- [ ] (Form Validation)
+- [ ] (Fetching)
+- [ ] (Private Routing)
+
 ## Credits
 
 Backend Techniques
 
-- ['LIKE operator for PostgreSQL'](https://www.postgresql.org/docs/current/functions-matching.html)
+-
 
 Frontend Techniques
