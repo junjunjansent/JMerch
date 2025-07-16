@@ -7,9 +7,9 @@ from app.models.user_model import create_user, show_user_via_username_or_email, 
 
 def sign_up_controller(data: dict) -> dict:
     # check data values
-    username = data.get('username')
-    email = data.get('email')
-    password = data.get('password')
+    username = data.get('username').strip()
+    email = data.get('email').strip()
+    password = data.get('password').strip()
     if not username or not password or not email:
         raise APIError(
             status=400,

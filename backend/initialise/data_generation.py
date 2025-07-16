@@ -1,8 +1,5 @@
 # PYTHONPATH=. python3 initialise/data_generation.py
 
-from flask import Flask, jsonify
-
-
 # ---------- data faker functions
 from faker import Faker
 from app.utils.bcrypt import hash_password
