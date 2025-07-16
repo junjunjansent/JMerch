@@ -24,9 +24,17 @@ def show_user_via_username_or_email(cursor: psycopg2.extensions.cursor, username
         cursor.execute("SELECT id, username, email, password FROM users WHERE username = %s OR email =%s;", (username, email))
     return cursor.fetchone()
 
+def show_user(cursor: psycopg2.extensions.cursor, username: str, basic_return=True) -> dict | None:
+    if basic_return:
+        cursor.execute("SELECT id, username, profile_photo, created_at FROM users WHERE username = %s;", (username, ))
+    else:
+        cursor.execute("SELECT id, username, email, first_name, last_name, gender, birthday, phone_number, profile_photo, default_shipping_address, created_at, updated_at FROM users WHERE username = %s;", (username, ))
+    return cursor.fetchone()
+
 def index_users(cursor: psycopg2.extensions.cursor)-> list[dict]:
-    cursor.execute("SELECT * FROM users;")
+    cursor.execute("SELECT id, username, email, first_name, last_name, gender, birthday, phone_number, profile_photo, default_shipping_address, created_at, updated_at FROM users;")
     return cursor.fetchall()
+
 
 # @app.route('/bcrypt-sign-up', methods=['POST'])
 # def sign_up():

@@ -5,15 +5,15 @@ meta {
 }
 
 post {
-  url: http://127.0.0.1:5000/sign-up
+  url: http://127.0.0.1:5000/api/public/sign-up
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "username":"user1",
-    "email":"test@test.com",
+    "username":"user5",
+    "email":"test@test5.com",
     "password":"12345678"
   }
 }

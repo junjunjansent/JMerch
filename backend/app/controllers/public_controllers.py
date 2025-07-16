@@ -3,7 +3,7 @@ from app.db.db_connection import get_db_connection
 from app.utils.error_handler import APIError, raise_api_error
 from app.utils.pyjwt import jwt_encoder
 from app.utils.bcrypt import hash_password, is_valid_hashed_pw
-from app.models.user_model import create_user, show_user_via_username_or_email, index_users
+from app.models.user_model import create_user, show_user_via_username_or_email, show_user, index_users
 
 def sign_up_controller(data: dict) -> dict:
     # check data values
@@ -84,6 +84,17 @@ def sign_in_controller(data: dict)-> dict:
 
     except Exception as err:
         connection.rollback()
+        raise_api_error(err, pointer="public_controller.py")
+    finally:
+        cursor.close()
+        connection.close()
+
+def show_user_controller(username):
+    try: 
+        (connection, cursor) = get_db_connection()
+        user = show_user(cursor, str(username))
+        return user
+    except Exception as err:
         raise_api_error(err, pointer="public_controller.py")
     finally:
         cursor.close()
