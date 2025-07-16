@@ -32,7 +32,7 @@ def show_user(cursor: psycopg2.extensions.cursor, username: str, basic_return=Tr
     return cursor.fetchone()
 
 def index_users(cursor: psycopg2.extensions.cursor)-> list[dict]:
-    cursor.execute("SELECT id, username, email, first_name, last_name, gender, birthday, phone_number, profile_photo, default_shipping_address, created_at, updated_at FROM users;")
+    cursor.execute("SELECT id, username, profile_photo, created_at FROM users;")
     return cursor.fetchall()
 
 
