@@ -1,6 +1,6 @@
-CREATE DATABASE JMerch;
+CREATE DATABASE jmerch;
 
-CREATE TABLE IF NOT EXISTS bands (
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   username VARCHAR(50) UNIQUE NOT NULL CHECK (username ~ '^[a-z0-9_-]{4,}$'),
   email VARCHAR(255) UNIQUE NOT NULL CHECK (email ~ '^[-.\w]+@[-.\w]+\.[-.\w]{2,}$'),

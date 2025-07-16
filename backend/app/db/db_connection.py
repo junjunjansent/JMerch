@@ -1,17 +1,27 @@
 import psycopg2
+import psycopg2.extras
+
 import os
-
-
-def get_db_connection():
-    db_url = os.getenv('DATABASE_URL')
-    # connection = psycopg2.connect(db_url)
-    connection = psycopg2.connect(
-        host=os.getenv('POSTGRES_HOST'), 
-        database='JMerch',
-        user=os.getenv('POSTGRES_USERNAME'),
-        password=os.getenv('POSTGRES_PASSWORD'),
-        sslmode="require")
-    cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    return (connection, cursor) # better to return tuple to maintain order
+from app.utils.error_handler import APIError
 
 # DATABASE_URL=postgresql://neondb_owner:@/users?sslmode=require&channel_binding=require
+
+def get_db_connection():
+    # db_url = os.getenv('DATABASE_URL')
+    # connection = psycopg2.connect(db_url)
+    try:
+        connection = psycopg2.connect(
+            host=os.getenv('POSTGRES_HOST'), 
+            database='jmerch',
+            user=os.getenv('POSTGRES_USERNAME'),
+            password=os.getenv('POSTGRES_PASSWORD'),
+            sslmode="require")
+        cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+        return (connection, cursor) # better to return tuple to maintain order
+    except Exception as err:
+        err_name = err.__class__.__name__
+        raise APIError(
+            status=503,
+            title=f"Service Unavailable: {err_name}",
+            detail=str(err), 
+            pointer="db > db_connection.py")

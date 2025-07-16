@@ -1,0 +1,19 @@
+meta {
+  name: User - sign_up_route
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:5000/sign-up
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "username":"user1",
+    "email":"test@test.com",
+    "password":"12345678"
+  }
+}

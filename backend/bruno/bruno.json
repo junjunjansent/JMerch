@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "jmerch",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
