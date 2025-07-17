@@ -44,6 +44,9 @@
               "buildTarget": "my-app:build:production"
             }
           }
+        },
+        "test": {
+          "builder": "@analogjs/vitest-angular:test"
         }
       }
     }

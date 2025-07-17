@@ -12,12 +12,16 @@ export default defineConfig(({ mode }) => ({
     mainFields: ['module'],
   },
   plugins: [
-    analog({
-      ssr: false,
-      static: true,
-      prerender: {
-        routes: [],
-      },
-    }),
+    analog(),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['src/test-setup.ts'],
+    include: ['**/*.spec.ts'],
+    reporters: ['default'],
+  },
+  define: {
+    'import.meta.vitest': mode !== 'production',
+  },
 }));
