@@ -7,6 +7,8 @@
 backend/.venv
 backend/.env
 frontend/.env
+frontend2/.env
+frontend2/node_modules
 
 # User-specific files
 *.rsuser

@@ -72,10 +72,11 @@ Database PostgreSQL Techniques:
 
 Frontend Angular Techniques:
 
-- [ ] (Form Creation)
-- [ ] (Form Validation)
-- [ ] (Fetching)
-- [ ] (Private Routing)
+- [x] [AnalogJS set up](https://www.npmjs.com/package/@analogjs/vite-plugin-angular)
+- [ ] [Form Creation]
+- [ ] [Form Validation]
+- [ ] [Fetching]
+- [ ] [Private Routing]
 
 ## Credits
 
