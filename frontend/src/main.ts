@@ -1,7 +1,14 @@
 import 'zone.js';
 import { bootstrapApplication } from '@angular/platform-browser';
+// import { appConfig } from './app/app.config';
+// bootstrapApplication(AppComponent, appConfig);
 
-import { AppComponent } from './app/app';
-import { appConfig } from './app/app.config';
+import { provideRouter } from '@angular/router';
+import { importProvidersFrom } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { routes } from './app/routes/app.routes';
+import { AppComponent } from './app/app.component';
 
-bootstrapApplication(AppComponent, appConfig);
+bootstrapApplication(AppComponent, {
+  providers: [provideRouter(routes), importProvidersFrom(ReactiveFormsModule)],
+});
