@@ -9,6 +9,4 @@ import { NavBarComponent } from './shared/components/nav-bar/nav-bar.component';
   templateUrl: './app.component.html',
   //   styleUrl: './app.css', // TODO to modify
 })
-export class AppComponent {
-  protected readonly title = signal('frontend');
-}
+export class AppComponent {}

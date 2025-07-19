@@ -1,5 +1,42 @@
 <nav>
-  <a routerLink="/">Home</a> | <a routerLink="/sign-up">Sign Up</a> |
-  <a routerLink="/sign-in">Sign In</a>
+  <div>
+    <a [routerLink]="URLS.PUBLIC.HOME" routerLinkActive="active">Home</a>
+    <a [routerLink]="URLS.PUBLIC.SIGN_UP" routerLinkActive="active">Sign Up</a>
+    <a [routerLink]="URLS.PUBLIC.SIGN_IN" routerLinkActive="active">Sign In</a>
+    <a [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL" routerLinkActive="active"
+      >Buy</a
+    >
+  </div>
+
+  <div>
+    <a [routerLink]="URLS.PUBLIC.HOME" routerLinkActive="active">Home</a>
+    <a [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL" routerLinkActive="active"
+      >Buy</a
+    >
+    <a
+      [routerLink]="URLS.USER(userUsername).SELLER.DEFAULT"
+      routerLinkActive="active"
+      >Seller</a
+    >
+  </div>
+
+  <div>
+    <a
+      [routerLink]="URLS.USER(userUsername).BUYER_CART.CART"
+      routerLinkActive="active"
+      >Cart</a
+    >
+    <a
+      [routerLink]="URLS.USER(userUsername).ABOUT.DEFAULT"
+      routerLinkActive="active"
+      >About</a
+    >
+    <a
+      [routerLink]="URLS.USER(userUsername).GROUP.DEFAULT"
+      routerLinkActive="active"
+      >Group</a
+    >
+    <p>Sign Out</p>
+  </div>
 </nav>
 <hr />
