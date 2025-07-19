@@ -9,6 +9,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { routes } from './app/routes/app.routes';
 import { AppComponent } from './app/app.component';
 
+// controls style import
+import './styles.scss';
+
 bootstrapApplication(AppComponent, {
   providers: [provideRouter(routes), importProvidersFrom(ReactiveFormsModule)],
 });

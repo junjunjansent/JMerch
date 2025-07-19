@@ -1,42 +1,117 @@
 <nav>
-  <div>
-    <a [routerLink]="URLS.PUBLIC.HOME" routerLinkActive="active">Home</a>
-    <a [routerLink]="URLS.PUBLIC.SIGN_UP" routerLinkActive="active">Sign Up</a>
-    <a [routerLink]="URLS.PUBLIC.SIGN_IN" routerLinkActive="active">Sign In</a>
-    <a [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL" routerLinkActive="active"
-      >Buy</a
-    >
-  </div>
-
-  <div>
-    <a [routerLink]="URLS.PUBLIC.HOME" routerLinkActive="active">Home</a>
-    <a [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL" routerLinkActive="active"
-      >Buy</a
-    >
+  <div class="nav-first">
     <a
-      [routerLink]="URLS.USER(userUsername).SELLER.DEFAULT"
+      class="nav-item"
+      [routerLink]="URLS.PUBLIC.HOME"
       routerLinkActive="active"
-      >Seller</a
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
+
+    <a
+      class="nav-item"
+      [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL"
+      routerLinkActive="active"
+      >Buy</a
     >
   </div>
-
-  <div>
+  <div class="nav-first">
     <a
+      class="nav-item"
+      [routerLink]="URLS.PUBLIC.SIGN_UP"
+      routerLinkActive="active"
+      >Sign Up</a
+    >
+    <a
+      class="nav-item"
+      [routerLink]="URLS.PUBLIC.SIGN_IN"
+      routerLinkActive="active"
+      >Sign In</a
+    >
+  </div>
+</nav>
+
+<nav>
+  <div class="nav-first">
+    <a
+      class="nav-item"
+      [routerLink]="URLS.PUBLIC.HOME"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >Home</a
+    >
+    <div class="nav-item">
+      <a [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL" routerLinkActive="active"
+        >Buy</a
+      >
+      <div class="nav-second">
+        <a
+          class="nav-item"
+          [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL"
+          routerLinkActive="active"
+          >Shop More</a
+        >
+        <a
+          class="nav-item"
+          [routerLink]="URLS.USER(userUsername).BUYER_ORDERS.ORDERS_ALL"
+          routerLinkActive="active"
+          >My Orders</a
+        >
+      </div>
+    </div>
+    <div class="nav-item">
+      <a
+        [routerLink]="URLS.USER(userUsername).SELLER.DEFAULT"
+        routerLinkActive="active"
+        >Sell</a
+      >
+      <div class="nav-second">
+        <a
+          class="nav-item"
+          [routerLink]="URLS.USER(userUsername).SELLER.PRODUCT_ALL"
+          routerLinkActive="active"
+          >Manage Products</a
+        >
+        <a
+          class="nav-item"
+          [routerLink]="URLS.USER(userUsername).SELLER.ORDER_ALL"
+          routerLinkActive="active"
+          >Manage Orders</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-first">
+    <a
+      class="nav-item"
       [routerLink]="URLS.USER(userUsername).BUYER_CART.CART"
       routerLinkActive="active"
       >Cart</a
     >
-    <a
-      [routerLink]="URLS.USER(userUsername).ABOUT.DEFAULT"
-      routerLinkActive="active"
-      >About</a
-    >
-    <a
-      [routerLink]="URLS.USER(userUsername).GROUP.DEFAULT"
-      routerLinkActive="active"
-      >Group</a
-    >
-    <p>Sign Out</p>
+    <div class="nav-item">
+      <a
+        [routerLink]="URLS.USER(userUsername).ABOUT.DEFAULT"
+        routerLinkActive="active"
+        >Your Profile</a
+      >
+      <div class="nav-second">
+        <a
+          class="nav-item"
+          [routerLink]="URLS.USER(userUsername).ABOUT.DEFAULT"
+          routerLinkActive="active"
+          >Your Details</a
+        >
+        <a
+          class="nav-item"
+          [routerLink]="URLS.USER(userUsername).GROUP.DEFAULT"
+          routerLinkActive="active"
+          >Group</a
+        >
+      </div>
+    </div>
+
+    <p class="nav-item">Sign Out</p>
   </div>
 </nav>
 <hr />
