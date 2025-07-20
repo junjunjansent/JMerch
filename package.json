@@ -3,10 +3,16 @@
   "module": "index.ts",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "concurrently \"cd backend && ./.venv/bin/python app.py\" \"cd frontend && bun run dev\""
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "concurrently": "^9.2.0"
   }
 }
