@@ -73,9 +73,13 @@ Database PostgreSQL Techniques:
 Frontend Angular Techniques:
 
 - [x] [AnalogJS set up](https://www.npmjs.com/package/@analogjs/vite-plugin-angular)
-- [x] [Routing](https://www.youtube.com/watch?v=BUDQTd1DQAg)
-- [ ] [Form Creation]
-- [ ] [Form Validation]
+- [x] [Routing ](https://www.youtube.com/watch?v=BUDQTd1DQAg)
+- [x] [Routing - Active Link](https://angular.dev/api/router/RouterLinkActive)
+- [x] [Angular Material](https://material.angular.dev/guide/theming)
+- [x] [Form Creation](https://www.youtube.com/watch?v=U9Xo0wXZIAg)
+- [x] [Form Validation](https://angular.dev/api/forms/FormControl)
+- [x] [Angular Form Module](https://material.angular.dev/components/form-field/overview)
+- [x] [Form Cross-Field Validation](https://angular.dev/guide/forms/form-validation#cross-field-validation)
 - [ ] [Fetching]
 - [ ] [Private Routing]
 
