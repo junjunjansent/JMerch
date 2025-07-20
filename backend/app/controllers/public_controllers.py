@@ -37,12 +37,11 @@ def sign_up_controller(data: dict) -> dict:
         # start hashing password & create user
         hashed_password = hash_password(password)
         user_creation_data["password"] = hashed_password
-        new_user = create_user(connection, cursor, user_creation_data)
+        new_user = create_user(cursor, user_creation_data)
         connection.commit() # save changes for other connections
 
         # token generation
-        token = jwt_encoder(new_user)
-        return new_user
+        return jwt_encoder(new_user)
     
     except Exception as err:
         connection.rollback()
