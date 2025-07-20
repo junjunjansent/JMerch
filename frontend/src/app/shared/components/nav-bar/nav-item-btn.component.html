@@ -1,0 +1,9 @@
+<button
+  mat-button
+  routerLinkActive="active"
+  [routerLink]="to"
+  [routerLinkActiveOptions]="{ exact: exactMatch }"
+  [matMenuTriggerFor]="matMenuTriggerFor ?? null"
+>
+  {{ label }}
+</button>

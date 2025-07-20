@@ -1,117 +1,94 @@
-<nav>
-  <div class="nav-first">
-    <a
-      class="nav-item"
-      [routerLink]="URLS.PUBLIC.HOME"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >Home</a
-    >
-
-    <a
-      class="nav-item"
-      [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL"
-      routerLinkActive="active"
-      >Buy</a
-    >
-  </div>
-  <div class="nav-first">
-    <a
-      class="nav-item"
-      [routerLink]="URLS.PUBLIC.SIGN_UP"
-      routerLinkActive="active"
-      >Sign Up</a
-    >
-    <a
-      class="nav-item"
-      [routerLink]="URLS.PUBLIC.SIGN_IN"
-      routerLinkActive="active"
-      >Sign In</a
-    >
-  </div>
-</nav>
-
-<nav>
-  <div class="nav-first">
-    <a
-      class="nav-item"
-      [routerLink]="URLS.PUBLIC.HOME"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      >Home</a
-    >
-    <div class="nav-item">
-      <a [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL" routerLinkActive="active"
-        >Buy</a
-      >
-      <div class="nav-second">
-        <a
-          class="nav-item"
-          [routerLink]="URLS.PUBLIC.BUY.PRODUCT_ALL"
-          routerLinkActive="active"
-          >Shop More</a
-        >
-        <a
-          class="nav-item"
-          [routerLink]="URLS.USER(userUsername).BUYER_ORDERS.ORDERS_ALL"
-          routerLinkActive="active"
-          >My Orders</a
-        >
-      </div>
-    </div>
-    <div class="nav-item">
-      <a
-        [routerLink]="URLS.USER(userUsername).SELLER.DEFAULT"
-        routerLinkActive="active"
-        >Sell</a
-      >
-      <div class="nav-second">
-        <a
-          class="nav-item"
-          [routerLink]="URLS.USER(userUsername).SELLER.PRODUCT_ALL"
-          routerLinkActive="active"
-          >Manage Products</a
-        >
-        <a
-          class="nav-item"
-          [routerLink]="URLS.USER(userUsername).SELLER.ORDER_ALL"
-          routerLinkActive="active"
-          >Manage Orders</a
-        >
-      </div>
-    </div>
+<!-- PUBLIC NAV BAR -->
+<mat-toolbar>
+  <!-- LEFT -->
+  <div>
+    <nav-item-btn label="Home" [to]="URLS.PUBLIC.HOME" />
+    <nav-item-btn label="Buy" [to]="URLS.PUBLIC.BUY.PRODUCT_ALL" />
   </div>
 
-  <div class="nav-first">
-    <a
-      class="nav-item"
+  <!-- RIGHT -->
+  <div>
+    <nav-item-btn label="Sign Up" [to]="URLS.PUBLIC.SIGN_UP" />
+    <nav-item-btn label="Sign In" [to]="URLS.PUBLIC.SIGN_IN" />
+  </div>
+</mat-toolbar>
+
+<!-- USER NAV BAR -->
+<mat-toolbar>
+  <!-- LEFT -->
+  <div>
+    <nav-item-btn label="Home" [to]="URLS.PUBLIC.HOME" />
+
+    <!-- Buy -->
+    <nav-item-btn
+      label="Buy"
+      [to]="URLS.PUBLIC.BUY.PRODUCT_ALL"
+      [exactMatch]="false"
+      [matMenuTriggerFor]="buyMenu"
+    />
+    <mat-menu #buyMenu="matMenu">
+      <nav-item-btn label="Shop More" [to]="URLS.PUBLIC.BUY.PRODUCT_ALL" />
+      <nav-item-btn
+        label="My Orders"
+        [to]="URLS.USER(userUsername).BUYER_ORDERS.ORDERS_ALL"
+      />
+    </mat-menu>
+
+    <!-- Sell -->
+    <nav-item-btn
+      label="Sell"
+      [to]="URLS.USER(userUsername).SELLER.DEFAULT"
+      [exactMatch]="false"
+      [matMenuTriggerFor]="sellMenu"
+    />
+    <mat-menu #sellMenu="matMenu">
+      <nav-item-btn
+        label="Overall Manager"
+        [to]="URLS.USER(userUsername).SELLER.DEFAULT"
+      />
+      <nav-item-btn
+        label="Manage Products"
+        [to]="URLS.USER(userUsername).SELLER.PRODUCT_ALL"
+      />
+      <nav-item-btn
+        label="Manage Orders"
+        [to]="URLS.USER(userUsername).SELLER.ORDER_ALL"
+      />
+    </mat-menu>
+  </div>
+
+  <!-- RIGHT -->
+  <div>
+    <button
+      mat-button
       [routerLink]="URLS.USER(userUsername).BUYER_CART.CART"
       routerLinkActive="active"
-      >Cart</a
     >
-    <div class="nav-item">
-      <a
-        [routerLink]="URLS.USER(userUsername).ABOUT.DEFAULT"
-        routerLinkActive="active"
-        >Your Profile</a
-      >
-      <div class="nav-second">
-        <a
-          class="nav-item"
-          [routerLink]="URLS.USER(userUsername).ABOUT.DEFAULT"
-          routerLinkActive="active"
-          >Your Details</a
-        >
-        <a
-          class="nav-item"
-          [routerLink]="URLS.USER(userUsername).GROUP.DEFAULT"
-          routerLinkActive="active"
-          >Group</a
-        >
-      </div>
-    </div>
+      Cart
+    </button>
 
-    <p class="nav-item">Sign Out</p>
+    <!-- Profile -->
+    <nav-item-btn
+      label="My Profile"
+      [to]="URLS.PUBLIC.USER_SHOP(userUsername)"
+      [matMenuTriggerFor]="profileMenu"
+    />
+    <mat-menu #profileMenu="matMenu">
+      <nav-item-btn
+        label="View My Page"
+        [to]="URLS.PUBLIC.USER_SHOP(userUsername)"
+      />
+      <nav-item-btn
+        label="My Details"
+        [to]="URLS.USER(userUsername).ABOUT.DEFAULT"
+      />
+      <nav-item-btn
+        label="My Groups"
+        [to]="URLS.USER(userUsername).GROUP.DEFAULT"
+      />
+    </mat-menu>
+
+    <button mat-button>Sign Out</button>
   </div>
-</nav>
+</mat-toolbar>
 <hr />

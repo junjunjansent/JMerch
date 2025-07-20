@@ -16,46 +16,71 @@ body {
   padding: 2rem;
 }
 
-nav {
+// navbar
+mat-toolbar {
   display: flex;
   justify-content: space-between;
 
-  .nav-first {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
+  button[mat-button] {
+    padding: 0.2rem; /* override default padding */
+    border-radius: 0.5rem;
 
-    .active {
-      color: seagreen;
-    }
-
-    .nav-item {
-      padding: 0.2rem;
-      position: relative;
-
-      .nav-second {
-        display: none;
-        position: absolute;
-        padding: 0.5rem;
-        white-space: nowrap;
-        background-color: darkslategray;
-
-        top: 100%;
-        left: 50%; // start 50% from left of parent
-        transform: translateX(-50%); // then you move it 50% left of itself
-        z-index: 10;
-        border-radius: 0.3rem;
-      }
-
-      &:hover {
-        border-radius: 0.3rem;
-        background-color: darkslategray;
-      }
-
-      &:hover .nav-second {
-        display: flex;
-        gap: 0.5rem;
-      }
+    &.active {
+      //  cause its not a child for routeLinkActive
+      background-color: seagreen;
+      font-weight: bold;
     }
   }
 }
+
+.submit-button {
+  display: flex;
+}
+
+.input-errors {
+  display: flex;
+}
+
+// nav {
+//   display: flex;
+//   justify-content: space-between;
+
+//   .nav-first {
+//     display: flex;
+//     gap: 0.5rem;
+//     align-items: center;
+
+//     .active {
+//       color: seagreen;
+//     }
+
+//     .nav-item {
+//       padding: 0.2rem;
+//       position: relative;
+
+//       .nav-second {
+//         display: none;
+//         position: absolute;
+//         padding: 0.5rem;
+//         white-space: nowrap;
+//         background-color: darkslategray;
+
+//         top: 100%;
+//         left: 50%; // start 50% from left of parent
+//         transform: translateX(-50%); // then you move it 50% left of itself
+//         z-index: 10;
+//         border-radius: 0.3rem;
+//       }
+
+//       &:hover {
+//         border-radius: 0.3rem;
+//         background-color: darkslategray;
+//       }
+
+//       &:hover .nav-second {
+//         display: flex;
+//         gap: 0.5rem;
+//       }
+//     }
+//   }
+// }

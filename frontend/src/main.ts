@@ -4,9 +4,9 @@ import { bootstrapApplication } from '@angular/platform-browser';
 // bootstrapApplication(AppComponent, appConfig);
 
 import { provideRouter } from '@angular/router';
+import { routes } from './app/routes/app.routes';
 import { importProvidersFrom } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { routes } from './app/routes/app.routes';
 import { AppComponent } from './app/app.component';
 
 // controls style import
