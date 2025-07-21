@@ -1,0 +1,1 @@
+product_categories_tuple = ('Tops', 'Bottoms', 'Headwear', 'Bags', 'Accessories', 'Misc')

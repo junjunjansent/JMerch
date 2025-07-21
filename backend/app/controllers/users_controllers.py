@@ -5,7 +5,7 @@ from app.utils.pyjwt import jwt_encoder
 from app.utils.input_validator import username_validator, email_validator, name_validator, gender_validator, phone_number_validator, password_validator
 from app.utils.bcrypt import is_valid_hashed_pw, hash_password
 
-def show_full_user_controller(user_id):
+def show_full_user_controller(user_id: str) -> dict:
     try: 
         (connection, cursor) = get_db_connection()
         user = show_full_user(cursor, str(user_id))
@@ -16,7 +16,7 @@ def show_full_user_controller(user_id):
         cursor.close()
         connection.close()
 
-def update_owner_controller(data: dict, user_id: str) -> dict:
+def update_owner_controller(data: dict, user_id: str) -> tuple[dict, str]:
     # extract values from data
     username = data.get('username')
     email = data.get('email')
