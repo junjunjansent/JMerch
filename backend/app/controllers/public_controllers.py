@@ -12,6 +12,7 @@ def sign_up_controller(data: dict) -> dict:
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
+    confirm_password = data.get('confirmPassword').strip()
 
     # check required values
     if not username or not password or not email:
@@ -25,6 +26,13 @@ def sign_up_controller(data: dict) -> dict:
     username = username_validator(username)
     email = email_validator(email)
     password = password_validator(password)
+    # >> check password matches confirmPassword
+    if password != confirm_password:
+        raise APIError(
+            status=400,
+            title="Bad Request: Password",
+            detail="Passwords given do not match", 
+            pointer="public_controller.py > sign_up_controller")
 
     # compile data
     user_creation_data = {"username": username, "email": email}
@@ -34,7 +42,7 @@ def sign_up_controller(data: dict) -> dict:
         (connection, cursor) = get_db_connection()
         
         # check username or email exists
-        existing_user = show_user_via_username_or_email(cursor, username, email)
+        existing_user = show_user_via_username_or_email(cursor, username=username, email=email)
         if existing_user:
             field, value = (("Username", username) if existing_user.get("username") == username else ("Email", email))
             raise APIError(

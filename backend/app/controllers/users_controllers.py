@@ -1,8 +1,9 @@
 from app.db.db_connection import get_db_connection
-from app.models.user_model import show_full_user, show_user_via_username_or_email, update_user
+from app.models.user_model import show_full_user, show_user_via_username_or_email, update_user, update_user_password
 from app.utils.error_handler import raise_api_error, APIError
 from app.utils.pyjwt import jwt_encoder
-from app.utils.input_validator import username_validator, email_validator, name_validator, gender_validator, phone_number_validator
+from app.utils.input_validator import username_validator, email_validator, name_validator, gender_validator, phone_number_validator, password_validator
+from app.utils.bcrypt import is_valid_hashed_pw, hash_password
 
 def show_full_user_controller(user_id):
     try: 
@@ -81,9 +82,78 @@ def update_owner_controller(data: dict, user_id: str) -> dict:
         connection.commit() 
 
         # give new token
-        updated_basic_user = show_user_via_username_or_email(cursor, username=username, email=None)
+        updated_basic_user = show_user_via_username_or_email(cursor, username=username)
 
         return (updated_full_user ,jwt_encoder(updated_basic_user))
+    except Exception as err:
+        raise_api_error(err, pointer="users_controller.py")
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def update_owner_password_controller(data: dict, user_id: str) -> dict:
+
+    # extract values from data
+    old_password = data.get('oldPassword')
+    new_password = data.get('newPassword')
+    confirm_new_password = data.get('confirmNewPassword').strip()
+
+    # need requirement for any password changes
+    if not old_password or not new_password or not confirm_new_password:
+        raise APIError(
+            status=400,
+            title="Bad Request: Passwords",
+            detail="Passwords not given", 
+            pointer="public_controller.py > update_owner_password_controller")
+
+    # check validation
+    new_password = password_validator(new_password)
+    # >> check password matches confirmPassword
+    if new_password != confirm_new_password:
+        raise APIError(
+            status=400,
+            title="Bad Request: New Password",
+            detail="New Passwords given do not match", 
+            pointer="public_controller.py > update_owner_password_controller")
+
+    try:
+        (connection, cursor) = get_db_connection()
+        
+        # model - get basic user details & password
+        existing_user = show_user_via_username_or_email(cursor, user_id=user_id, password_return=True)
+        if not existing_user:
+            raise APIError(
+                status=404,
+                title="Not Found: User",
+                detail="User does not exist", 
+                pointer="users_controller.py > update_owner_password_controller")
+        retrieved_password = existing_user.get('password')
+
+        # model - check if old password matches
+        if not is_valid_hashed_pw(old_password, retrieved_password):
+            raise APIError(
+                status=401,
+                title="Unauthorized: Old Password",
+                detail="Old Password given is incorrect", 
+                pointer="public_controller.py > update_owner_password_controller")
+        
+        # model - check if new password is the same as old password, raise error that there is no point 400
+        if is_valid_hashed_pw(new_password, retrieved_password):
+            raise APIError(
+                status=422,
+                title="Unprocessable Content: New Password",
+                detail="New Password given same as Old Password", 
+                pointer="public_controller.py > update_owner_password_controller")
+
+        # model - update using userId
+        # updated_at - is updated in SQL
+        # compile data
+        hashed_new_password = hash_password(new_password)
+        user_update_data = {"password": hashed_new_password}
+        updated_full_user = update_user_password(cursor, user_update_data, user_id)
+        connection.commit() 
+        return updated_full_user
     except Exception as err:
         raise_api_error(err, pointer="users_controller.py")
     finally:
