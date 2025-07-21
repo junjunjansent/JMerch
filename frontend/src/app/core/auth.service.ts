@@ -35,6 +35,7 @@ export class AuthService {
   }
 
   // this is the one that reactively tracks and for me to read the state
+  // need to make readable
   isLoggedIn$ = this.authState$.asObservable();
 
   isAuthenticated(): boolean {
