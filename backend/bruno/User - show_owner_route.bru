@@ -1,0 +1,15 @@
+meta {
+  name: User - show_owner_route
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://127.0.0.1:5000/api/users/owner
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsInVzZXJuYW1lIjoidXNlcjEiLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmIkMTIkaDlrN2VwTzh4eXJOZVZxaElHLzBoT3ZaVG44VGpUQW1haTV4YlpJN1pWdDZoUzk0WmdIRWEifQ.GbuW4roar2ZacCTINFGlj4zUENJ_I3H9VrIUya4HfC4
+}

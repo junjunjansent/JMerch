@@ -9,6 +9,9 @@ def create_app():
     from app.routes.public_routes import public_blueprint
     app.register_blueprint(public_blueprint)
 
+    from app.routes.users_routes import users_blueprint
+    app.register_blueprint(users_blueprint)
+
     # ----- error Handler
     from app.utils.error_handler import APIError
 

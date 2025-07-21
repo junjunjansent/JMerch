@@ -1,0 +1,22 @@
+meta {
+  name: User - update_owner_route
+  type: http
+  seq: 7
+}
+
+put {
+  url: http://127.0.0.1:5000/api/users/owner
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDgsInVzZXJuYW1lIjoidXNlcjEiLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmIkMTIkaDlrN2VwTzh4eXJOZVZxaElHLzBoT3ZaVG44VGpUQW1haTV4YlpJN1pWdDZoUzk0WmdIRWEifQ.GbuW4roar2ZacCTINFGlj4zUENJ_I3H9VrIUya4HfC4
+}
+
+body:json {
+  {
+    "gender": "female",
+    "lastName": "Incredible Last Name"
+  }
+}

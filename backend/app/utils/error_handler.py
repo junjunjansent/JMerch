@@ -14,7 +14,7 @@ def raise_api_error(err, status = 500, title = "Internal Server Error", pointer 
             status={status},
             title=f"{title}: {err_name}",
             detail=str(err), 
-            pointer="{pointer}")
+            pointer=f"{pointer}")
 
 
 # raise APIError(400, "Bad Request", "Missing email")

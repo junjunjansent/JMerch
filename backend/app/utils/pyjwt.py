@@ -22,10 +22,10 @@ def jwt_encoder(payload: dict) -> str:
     except Exception as err:
         err_name = err.__class__.__name__
         raise APIError(
-                status=500,
-                title=f"Internal Server Error: {err_name}",
-                detail=str(err), 
-                pointer="util > pyjwt.py")
+            status=500,
+            title=f"Internal Server Error: {err_name}",
+            detail=str(err), 
+            pointer="util > pyjwt.py")
 
 def jwt_verifier(token: str) -> dict:
     try: 
@@ -34,7 +34,7 @@ def jwt_verifier(token: str) -> dict:
     except Exception as err:
         err_name = err.__class__.__name__
         raise APIError(
-                status=500,
-                title=f"Internal Server Error: {err_name}",
-                detail=str(err), 
-                pointer="util > pyjwt.py")
+            status=500,
+            title=f"Internal Server Error: {err_name}",
+            detail=str(err), 
+            pointer="util > pyjwt.py")
