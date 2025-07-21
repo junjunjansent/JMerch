@@ -84,8 +84,8 @@ Frontend Angular Techniques:
 - [x] [Authentication - Interceptor for Bearer Token](https://medium.com/@matheusluna96/authentication-and-authorization-in-angular-0697ab16e465)
 - [x] [Angular Material - SnackBar/Toasts](https://material.angular.dev/components/snack-bar/overview)
 - [x] [Reusable SnackBar](https://stackoverflow.com/questions/42761039/how-to-use-snackbar-on-service-to-use-in-every-component-in-angular-2)
+- [x] [Authorization - Private Routing Role Guards](https://medium.com/@matheusluna96/authentication-and-authorization-in-angular-0697ab16e465)
 - [ ] [Fetching]
-- [ ] [Authorization - Private Routing]
 
 ## Credits
 

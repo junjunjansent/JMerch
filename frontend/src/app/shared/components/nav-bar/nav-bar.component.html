@@ -1,5 +1,5 @@
 <!-- PUBLIC NAV BAR -->
-<mat-toolbar>
+<mat-toolbar *ngIf="!isLoggedIn">
   <!-- LEFT -->
   <div>
     <nav-item-btn label="Home" [to]="URLS.PUBLIC.HOME" />
@@ -14,7 +14,7 @@
 </mat-toolbar>
 
 <!-- USER NAV BAR -->
-<mat-toolbar>
+<mat-toolbar *ngIf="isLoggedIn">
   <!-- LEFT -->
   <div>
     <nav-item-btn label="Home" [to]="URLS.PUBLIC.HOME" />
@@ -84,6 +84,6 @@
 
     <button mat-button (click)="signOut()">Sign Out</button>
   </div>
-  <p>{{ userUsername1 }}</p>
+  <!-- <p>{{ userUsername1 }}</p> -->
 </mat-toolbar>
 <hr />

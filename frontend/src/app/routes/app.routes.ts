@@ -20,6 +20,7 @@ import { CheckoutComponent } from '../pages/buyer/cart/checkout.component';
 import { BuyerOrderAllComponent } from '../pages/buyer/orders/buyer-order-all.component';
 import { BuyerOrderOneComponent } from '../pages/buyer/orders/buyer-order-one.component';
 import { SellManagerComponent } from '../pages/seller/sell-manager.component';
+import { AuthGuard } from '../core/auth.guards';
 
 export const routes: Routes = [
   { path: PUBLIC_PATHS.HOME, component: HomeComponent },
@@ -35,6 +36,8 @@ export const routes: Routes = [
   { path: PUBLIC_PATHS.USER_SHOP(), component: UserShopComponent },
   {
     path: USER_PATHS.USER(),
+    canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard], //for all children
     children: [
       { path: '', component: UserShopComponent },
       {

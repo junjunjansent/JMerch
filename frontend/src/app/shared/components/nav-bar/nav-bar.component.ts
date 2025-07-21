@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { map } from 'rxjs';
 
 import { URLS } from '../../../routes/PATHS';
 
@@ -14,6 +16,7 @@ import { SnackBarService } from '../../service/snack-bar.service';
   selector: 'app-nav-bar',
   standalone: true,
   imports: [
+    CommonModule,
     MatToolbarModule,
     MatMenuModule,
     MatButtonModule,
@@ -24,7 +27,11 @@ import { SnackBarService } from '../../service/snack-bar.service';
 export class NavBarComponent {
   URLS = URLS;
 
-  userUsername = String(1); // i need userUsername
+  // observable states from AuthService
+  isLoggedIn = false;
+  userUsername: string = '';
+
+  // userUsername = String(1); // i need userUsername
 
   constructor(
     private router: Router,
@@ -32,8 +39,13 @@ export class NavBarComponent {
     private snackBar: SnackBarService
   ) {}
 
-  get userUsername1(): string {
-    return this.authService.getUsernameFromToken() ?? '';
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe((loggedIn) => {
+      this.isLoggedIn = loggedIn;
+      this.userUsername = loggedIn
+        ? this.authService.getUsernameFromToken()
+        : '';
+    });
   }
 
   signOut() {
