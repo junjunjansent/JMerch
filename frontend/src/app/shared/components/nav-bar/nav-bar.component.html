@@ -59,13 +59,7 @@
 
   <!-- RIGHT -->
   <div>
-    <button
-      mat-button
-      [routerLink]="URLS.USER(userUsername).BUYER_CART.CART"
-      routerLinkActive="active"
-    >
-      Cart
-    </button>
+    <nav-item-btn label="Cart" [to]="URLS.USER(userUsername).BUYER_CART.CART" />
 
     <!-- Profile -->
     <nav-item-btn
@@ -88,7 +82,8 @@
       />
     </mat-menu>
 
-    <button mat-button>Sign Out</button>
+    <button mat-button (click)="signOut()">Sign Out</button>
   </div>
+  <p>{{ userUsername1 }}</p>
 </mat-toolbar>
 <hr />

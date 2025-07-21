@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { URLS } from '../../routes/PATHS';
@@ -14,6 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormFieldTextComponent } from '../../shared/components/form-field-text.component';
 import { passwordsMatchValidator } from '../../shared/validator';
+import { AuthService } from '../../core/auth.service';
+import { SnackBarService } from '../../shared/service/snack-bar.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -51,7 +53,12 @@ export class SignUpComponent {
       validators: passwordsMatchValidator, // cross-field validator fn given
     }
   );
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: SnackBarService
+  ) {}
 
   formControlFromName(formControlName: string): FormControl {
     return this.signUpForm.get(formControlName) as FormControl;
@@ -59,13 +66,25 @@ export class SignUpComponent {
 
   onSubmit() {
     const signUpForm = this.signUpForm;
-    if (signUpForm.valid) {
-      console.log('Sign Up Data:', signUpForm.value);
-      signUpForm.reset();
-      this.router.navigate([this.URLS.PUBLIC.HOME]);
+    const { username, password, email } = signUpForm.value;
+
+    // angular forms and typescript validation dont seem compatible lol, do double check
+    if (signUpForm.valid && username && password && email) {
+      this.authService.signUp({ username, password, email }).subscribe({
+        next: (res) => {
+          console.log('Signed Up with token:', res.token);
+          this.snackBar.success('Sign Up Successful');
+          signUpForm.reset();
+          this.router.navigate([this.URLS.PUBLIC.HOME]);
+        },
+        error: (err) => {
+          const errArray = err.error.error;
+          console.log('Error: ', err.error.error);
+          this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
+        },
+      });
     } else {
       signUpForm.markAllAsTouched();
-      console.log('fail');
     }
   }
 }

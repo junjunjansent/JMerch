@@ -33,6 +33,27 @@ mat-toolbar {
   }
 }
 
+// Snack Bars
+// TODO - fix this because doesnt work
+mat-snack-bar-container {
+  .snackbar-success {
+    background-color: lightgreen;
+    color: black;
+  }
+
+  .snackbar-error {
+    background-color: lightcoral;
+    color: black;
+  }
+
+  .snackbar-info {
+    background-color: lightblue;
+    color: black;
+  }
+}
+
+// Forms
+
 .submit-button {
   display: flex;
 }
