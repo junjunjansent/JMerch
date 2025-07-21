@@ -5,7 +5,7 @@
     [required]="true"
     [control]="formControlFromName('username')"
     autocomplete="username"
-    patternErrorMessage="Username can only be alphanumeric, '-', or '_'"
+    patternErrorMessage="Alphanumeric, '-', or '_'"
   />
 
   <form-field-text
@@ -26,7 +26,7 @@
 
   <form-field-text
     label="Confirm Password"
-    type="confirmPassword"
+    type="password"
     [required]="true"
     [control]="formControlFromName('confirmPassword')"
   />

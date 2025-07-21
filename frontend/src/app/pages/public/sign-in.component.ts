@@ -13,6 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormFieldTextComponent } from '../../shared/components/form-field-text.component';
+import { AuthService } from '../../core/auth.service';
+import { SnackBarService } from '../../shared/service/snack-bar.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -42,7 +44,12 @@ export class SignInComponent {
       Validators.minLength(8),
     ]),
   });
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private snackBar: SnackBarService
+  ) {}
 
   formControlFromName(formControlName: string): FormControl {
     return this.signInForm.get(formControlName) as FormControl;
@@ -50,13 +57,23 @@ export class SignInComponent {
 
   onSubmit() {
     const signInForm = this.signInForm;
-    if (signInForm.valid) {
-      console.log('Sign In Data:', signInForm.value);
-      signInForm.reset();
-      this.router.navigate([this.URLS.PUBLIC.HOME]);
+    const { usernameOrEmail, password } = signInForm.value;
+    if (signInForm.valid && usernameOrEmail && password) {
+      this.authService.signIn({ usernameOrEmail, password }).subscribe({
+        next: (res) => {
+          console.log('Signed In with token:', res.token);
+          this.snackBar.success('Sign In Successful');
+          signInForm.reset();
+          this.router.navigate([this.URLS.PUBLIC.HOME]);
+        },
+        error: (err) => {
+          const errArray = err.error.error;
+          console.log('Error: ', err.error.error);
+          this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
+        },
+      });
     } else {
       signInForm.markAllAsTouched();
-      console.log('fail');
     }
   }
 }

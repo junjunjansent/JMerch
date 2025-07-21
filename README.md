@@ -78,10 +78,14 @@ Frontend Angular Techniques:
 - [x] [Angular Material](https://material.angular.dev/guide/theming)
 - [x] [Form Creation](https://www.youtube.com/watch?v=U9Xo0wXZIAg)
 - [x] [Form Validation](https://angular.dev/api/forms/FormControl)
-- [x] [Angular Form Module](https://material.angular.dev/components/form-field/overview)
+- [x] [Angular Material - Form Module](https://material.angular.dev/components/form-field/overview)
 - [x] [Form Cross-Field Validation](https://angular.dev/guide/forms/form-validation#cross-field-validation)
+- [x] [Authentication - Service for SignUp/SignIn](https://medium.com/@matheusluna96/authentication-and-authorization-in-angular-0697ab16e465)
+- [x] [Authentication - Interceptor for Bearer Token](https://medium.com/@matheusluna96/authentication-and-authorization-in-angular-0697ab16e465)
+- [x] [Angular Material - SnackBar/Toasts](https://material.angular.dev/components/snack-bar/overview)
+- [x] [Reusable SnackBar](https://stackoverflow.com/questions/42761039/how-to-use-snackbar-on-service-to-use-in-every-component-in-angular-2)
 - [ ] [Fetching]
-- [ ] [Private Routing]
+- [ ] [Authorization - Private Routing]
 
 ## Credits
 
