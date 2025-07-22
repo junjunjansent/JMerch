@@ -6,15 +6,19 @@ from app.utils.error_handler import APIError
 def create_user(cursor: psycopg2.extensions.cursor, data: dict) -> dict:
     try: 
         # data = {"username": username, "email": email, "password": password}
-        cursor.execute("INSERT INTO users (username, email, password) VALUES (%s, %s, %s);", (data["username"], data["email"], data["password"]))
+        cursor.execute("""
+            INSERT INTO users (username, email, password)
+            VALUES (%s, %s, %s);""", 
+            (data["username"], data["email"], data["password"]))
 
         # find the last insertion
         cursor.execute("SELECT id, username, email FROM users WHERE username = %s;", (data["username"],))
         return cursor.fetchone()
     except Exception as err:
+        err_name = err.__class__.__name__ or "Database"
         raise APIError(
             status=500,
-            title="Internal Server Error: Database",
+            title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="users_model.py > create_user")
 
@@ -29,7 +33,7 @@ def show_user_via_username_or_email(
     if not (username or email or user_id):
         raise APIError(
             status=501,
-            title="Not Implemented: Database",
+            title="Not Implemented: User Database",
             detail="No Username, Email, Id given to search User Table", 
             pointer="users_model.py > show_user_via_username_or_email")
     elif not password_return:
@@ -79,7 +83,7 @@ def update_user(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) ->
 
         # find the last insertion
         cursor.execute("""SELECT 
-                       id, username, email, 
+                            id, username, email, 
                             first_name, last_name, 
                             gender, birthday, phone_number,
                             profile_photo, default_shipping_address, 
@@ -88,16 +92,16 @@ def update_user(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) ->
                        (user_id, ))
         return cursor.fetchone()
     except Exception as err:
+        err_name = err.__class__.__name__ or "Database"
         raise APIError(
             status=500,
-            title="Internal Server Error: Database",
+            title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="users_model.py > update_user")
 
 def update_user_password(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) -> dict:
     try:
-        cursor.execute("""
-                       UPDATE users SET 
+        cursor.execute("""UPDATE users SET 
                             password = %s, 
                             updated_at = CURRENT_TIMESTAMP 
                        WHERE id = %s;""", (data["password"], user_id))
@@ -114,8 +118,9 @@ def update_user_password(cursor: psycopg2.extensions.cursor, data: dict, user_id
                        (user_id, ))
         return cursor.fetchone()
     except Exception as err:
+        err_name = err.__class__.__name__ or "Database"
         raise APIError(
             status=500,
-            title="Internal Server Error: Database",
+            title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="users_model.py > update_user_password")

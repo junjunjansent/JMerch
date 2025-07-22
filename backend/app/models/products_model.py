@@ -12,6 +12,14 @@ def convert_user_ids_to_usernames(cursor: psycopg2.extensions.cursor, user_ids: 
     username_dictionary = cursor.fetchall()
     return [entry[0] for entry in username_dictionary]
 
+def show_product_variant_id(cursor: psycopg2.extensions.cursor, variant_id: str) -> dict:
+    cursor.execute("""SELECT 
+                        id, design_name, created_at, updated_at 
+                   FROM product_variants 
+                   WHERE id = %s""",
+                     (variant_id,))
+    return cursor.fetchone()
+
 def index_products(cursor: psycopg2.extensions.cursor, user_id: str = None) -> list[dict]:
     # either viewable_to_users_list = NULL (viewable to ALL) or user_id in viewable_to_users_list
     # if product not active, maybe show diff colour
@@ -37,14 +45,12 @@ def index_products(cursor: psycopg2.extensions.cursor, user_id: str = None) -> l
         WHERE (products.owner_user_id = %s) 
             OR (products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))
         GROUP BY products.id, users.username
-        ORDER BY product_name ASC;
-    """
+        ORDER BY product_name ASC;"""
     cursor.execute(sql_query, (user_id, user_id))
     return cursor.fetchall()
 
 def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str = "buyer", user_id: str = None):
     # also to index all variants, {product: xx, variants: []}
-    result = {"product": {}, "variants": []}
 
     match role:
         case "buyer":
@@ -62,11 +68,10 @@ def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str 
                 FROM products
                     JOIN users ON products.owner_user_id = users.id
                 WHERE products.id = %s
-                    AND (products.owner_user_id = %s OR products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))
-            """
+                    AND (products.owner_user_id = %s OR products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))"""
             sql_query_variants="""
                 SELECT 
-                    id,
+                    id AS variant_id,
                     design_name,
                     qty_available,
                     price,
@@ -74,13 +79,12 @@ def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str 
                     created_at
                 FROM product_variants AS variants
                 WHERE main_product_id = %s
-                ORDER BY created_at ASC;
-            """
+                ORDER BY created_at ASC;"""
             cursor.execute(sql_query_product, (product_id, user_id, user_id))
-            result["product"] = cursor.fetchone()
-            if result.get("product"):
+            product = cursor.fetchone()
+            if product:
                 cursor.execute(sql_query_variants, (product_id, ))
-                result["variants"] = cursor.fetchall()
+                product["variants"] = cursor.fetchall()
 
         case "seller":
             # products - can see viewable_to_users_list, updated_at (BUT need to convert)
@@ -118,10 +122,10 @@ def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str 
                 ORDER BY created_at ASC;
             """
             cursor.execute(sql_query_product, (product_id, user_id, user_id))
-            result["product"] = cursor.fetchone()
-            if result.get("product"):
+            product = cursor.fetchone()
+            if product:
                 cursor.execute(sql_query_variants, (product_id,))
-                result["variants"] = cursor.fetchall()
+                product["variants"] = cursor.fetchall()
 
         case _:
             raise APIError(
@@ -131,9 +135,9 @@ def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str 
                 pointer="products_model.py > show_product")
 
     # transform the list of IDs to usernames, not ordered
-    if result.get("product") and result.get("product").get("viewable_to_users_list"):
-        result["product"]["viewable_to_users_list"] = convert_user_ids_to_usernames(result["product"]["viewable_to_users_list"])
-    return result
+    if product and product.get("viewable_to_users_list"):
+        product["viewable_to_users_list"] = convert_user_ids_to_usernames(product["viewable_to_users_list"])
+    return product
 
 
 
@@ -145,9 +149,10 @@ def create_product(cursor: psycopg2.extensions.cursor, ):
     try:
         return
     except Exception as err:
+        err_name = err.__class__.__name__ or "Products Database"
         raise APIError(
             status=500,
-            title="Internal Server Error: Products Database",
+            title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="products_model.py > create_product")
 
@@ -155,9 +160,10 @@ def update_product(cursor: psycopg2.extensions.cursor, ):
     try:
         return
     except Exception as err:
+        err_name = err.__class__.__name__ or "Products Database"
         raise APIError(
             status=500,
-            title="Internal Server Error: Products Database",
+            title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="products_model.py > update_product")
 
@@ -165,9 +171,10 @@ def create_product_variant(cursor: psycopg2.extensions.cursor, ):
     try:
         return
     except Exception as err:
+        err_name = err.__class__.__name__ or "Products Database"
         raise APIError(
             status=500,
-            title="Internal Server Error: Product Variants Database",
+            title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="products_model.py > create_product_variant")
 
@@ -175,8 +182,9 @@ def update_product_variant(cursor: psycopg2.extensions.cursor, ):
     try:
         return
     except Exception as err:
+        err_name = err.__class__.__name__ or "Products Database"
         raise APIError(
             status=500,
-            title="Internal Server Error: Product Variants Database",
+            title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="products_model.py > update_product_variant")

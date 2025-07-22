@@ -94,10 +94,20 @@ Frontend Angular Techniques:
 - [x] [Authorization - Private Routing Role Guards](https://medium.com/@matheusluna96/authentication-and-authorization-in-angular-0697ab16e465)
 - [ ] [Fetching]
 
-## Credits
+## Challenges
 
 Backend Techniques
 
--
+- NOT NULL vs DEFAULT
+- Difficulty handling NULL data when importing
+- formatting of Python not supported by Prettier
+- Handling of SQL as strings.... (I guess Spell Checker helps)
+  - Feels very manual
+- Non-chaining format of Python Flask
+- Translating camelCase to snake_case to PostgreSQL
 
 Frontend Techniques
+
+- Component & Data Binding a bit difficult to conceptualise/visualise
+- Strict Typing when modularising components (more for Forms) - i.e. the typing differences of Typescript & Angular are not apparent
+- 2 layers of imports, Standalone Modules requiring imports of import

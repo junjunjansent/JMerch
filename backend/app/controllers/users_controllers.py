@@ -9,6 +9,12 @@ def show_full_user_controller(user_id: str) -> dict:
     try: 
         (connection, cursor) = get_db_connection()
         user = show_full_user(cursor, str(user_id))
+        if not user:
+            raise APIError(
+                status=404,
+                title="Not Found: User",
+                detail="User does not exist", 
+                pointer="users_controller.py > show_full_user_controller")
         return user
     except Exception as err:
         raise_api_error(err, pointer="users_controller.py")
@@ -86,6 +92,7 @@ def update_owner_controller(data: dict, user_id: str) -> tuple[dict, str]:
 
         return (updated_full_user ,jwt_encoder(updated_basic_user))
     except Exception as err:
+        connection.rollback()
         raise_api_error(err, pointer="users_controller.py")
     finally:
         cursor.close()
@@ -155,6 +162,7 @@ def update_owner_password_controller(data: dict, user_id: str) -> dict:
         connection.commit() 
         return updated_full_user
     except Exception as err:
+        connection.rollback()
         raise_api_error(err, pointer="users_controller.py")
     finally:
         cursor.close()
