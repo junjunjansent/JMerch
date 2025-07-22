@@ -45,7 +45,15 @@ def show_basic_user(cursor: psycopg2.extensions.cursor, username: str) -> dict |
     return cursor.fetchone()
 
 def show_full_user(cursor: psycopg2.extensions.cursor, user_id: str) -> dict | None:
-    cursor.execute("SELECT id, username, email, first_name, last_name, gender, birthday, phone_number, profile_photo, default_shipping_address, created_at, updated_at FROM users WHERE id = %s;", (user_id, ))
+    cursor.execute("""SELECT 
+                        id, username, email, 
+                        first_name, last_name, 
+                        gender, birthday, phone_number, 
+                        profile_photo, default_shipping_address, 
+                        created_at, updated_at 
+                   FROM users 
+                   WHERE id = %s;""", 
+                   (user_id, ))
     return cursor.fetchone()
 
 def index_users(cursor: psycopg2.extensions.cursor)-> list[dict]:
@@ -54,10 +62,30 @@ def index_users(cursor: psycopg2.extensions.cursor)-> list[dict]:
 
 def update_user(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) -> dict:
     try: 
-        cursor.execute("UPDATE users SET username = %s, email = %s, first_name = %s, last_name = %s, birthday = %s, gender = %s, phone_number = %s, profile_photo = %s, default_shipping_address = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s", (data["username"], data["email"], data["first_name"], data["last_name"], data["birthday"], data["gender"], data["phone_number"], data["profile_photo"], data["default_shipping_address"], user_id))
+        cursor.execute("""UPDATE users SET 
+                            username = %s, email = %s,
+                            first_name = %s, last_name = %s, 
+                            birthday = %s, gender = %s, 
+                            phone_number = %s, profile_photo = %s, 
+                            default_shipping_address = %s, 
+                            updated_at = CURRENT_TIMESTAMP 
+                       WHERE id = %s""", (
+                           data["username"], data["email"], 
+                           data["first_name"], data["last_name"], 
+                           data["birthday"], data["gender"], 
+                           data["phone_number"], data["profile_photo"], 
+                           data["default_shipping_address"], 
+                           user_id))
 
         # find the last insertion
-        cursor.execute("SELECT id, username, email, first_name, last_name, gender, birthday, phone_number, profile_photo, default_shipping_address, created_at, updated_at FROM users WHERE id = %s;", (user_id, ))
+        cursor.execute("""SELECT 
+                       id, username, email, 
+                            first_name, last_name, 
+                            gender, birthday, phone_number,
+                            profile_photo, default_shipping_address, 
+                            created_at, updated_at 
+                       FROM users WHERE id = %s;""", 
+                       (user_id, ))
         return cursor.fetchone()
     except Exception as err:
         raise APIError(
@@ -68,10 +96,22 @@ def update_user(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) ->
 
 def update_user_password(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) -> dict:
     try:
-        cursor.execute("UPDATE users SET password = %s, updated_at = CURRENT_TIMESTAMP WHERE id = %s;", (data["password"], user_id))
+        cursor.execute("""
+                       UPDATE users SET 
+                            password = %s, 
+                            updated_at = CURRENT_TIMESTAMP 
+                       WHERE id = %s;""", (data["password"], user_id))
 
         # find the last insertion
-        cursor.execute("SELECT id, username, email, first_name, last_name, gender, birthday, phone_number, profile_photo, default_shipping_address, created_at, updated_at FROM users WHERE id = %s;", (user_id, ))
+        cursor.execute("""SELECT 
+                            id, username, email, 
+                            first_name, last_name, 
+                            gender, birthday, phone_number, 
+                            profile_photo, default_shipping_address, 
+                            created_at, updated_at 
+                       FROM users 
+                       WHERE id = %s;""", 
+                       (user_id, ))
         return cursor.fetchone()
     except Exception as err:
         raise APIError(

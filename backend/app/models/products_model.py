@@ -123,6 +123,13 @@ def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str 
                 cursor.execute(sql_query_variants, (product_id,))
                 result["variants"] = cursor.fetchall()
 
+        case _:
+            raise APIError(
+                status=500,
+                title="Internal Server Error: Products Database",
+                detail="Invalid role given.", 
+                pointer="products_model.py > show_product")
+
     # transform the list of IDs to usernames, not ordered
     if result.get("product") and result.get("product").get("viewable_to_users_list"):
         result["product"]["viewable_to_users_list"] = convert_user_ids_to_usernames(result["product"]["viewable_to_users_list"])

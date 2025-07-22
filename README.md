@@ -75,6 +75,7 @@ Database PostgreSQL Techniques:
 - [x] [NOT NULL vs DEFAULT usage]
 - [x] [ON DELETE CASCADE](https://neon.com/postgresql/postgresql-tutorial/postgresql-delete-cascade)
 - [ ] [UUID usage]
+- [ ] [Use PATCH instead of PUT]
 
 Frontend Angular Techniques:
 

@@ -1,6 +1,7 @@
 from marshmallow import validate
 from app.utils.error_handler import APIError
 from app.shared_constants.gender import gender_tuple
+from app.shared_constants.product_categories import product_categories_tuple
 
 def username_validator(username: str) -> str:
     username = username.strip()
@@ -68,6 +69,7 @@ def name_validator(name: str) -> str:
     return name
 
 def gender_validator(gender: str) -> str:
+    gender = gender.strip()
     if not validate.OneOf(gender_tuple)(gender):
         raise APIError(
             status=422,
@@ -76,7 +78,6 @@ def gender_validator(gender: str) -> str:
             detail="Gender must be one of the available options.",
         )
     return gender
-
 
 def phone_number_validator(phone_number: str) -> str:
     phone_number = phone_number.strip()
@@ -88,3 +89,52 @@ def phone_number_validator(phone_number: str) -> str:
             detail="Phone number must be in international number format.",
         )
     return phone_number
+
+def categories_validator(category: str) -> str:
+    category = category.strip()
+    if not validate.OneOf(product_categories_tuple)(category):
+        raise APIError(
+            status=422,
+            pointer="input_validator.py",
+            title="Unprocessable Content: Category",
+            detail="Category must be one of the available options.",
+        )
+    return category
+
+def number_range_validator(number: int | float, *,
+    num_type="int",  # "int" or "price"
+    min=float("-inf"), max=float("inf"),
+) -> int | float:
+    # -- Check type
+    match num_type:
+        case "int":
+            if not isinstance(number, int):
+                raise APIError(
+                    status=422,
+                    pointer="input_validator.py",
+                    title="Unprocessable Content: Number Format",
+                    detail="Number expected to be integer.")
+        case "price":
+            if not isinstance(number, (int, float)) and round(number, 2) != number:
+                raise APIError(
+                    status=422,
+                    pointer="input_validator.py",
+                    title="Unprocessable Content: Number Format",
+                    detail="Number expected to be price format (2dp float).")
+            number = round(number, 2)
+        case _:
+            raise APIError(
+                status=422,
+                pointer="input_validator.py",
+                title="Unprocessable Content: Number Format",
+                detail="Invalid format requested.")
+
+    # -- Check Range
+    if number < min or number > max:
+        raise APIError(
+            status=422,
+            pointer="input_validator.py",
+            title="Unprocessable Content: Number Range",
+            detail=f"Number expected to be in range {min} and {max}.")
+    
+    return number
