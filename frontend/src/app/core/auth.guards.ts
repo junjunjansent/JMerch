@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { URLS } from '../routes/PATHS';
+import { URLS } from './routes/PATHS';
 import {
   CanActivate,
   ActivatedRouteSnapshot,

@@ -1,0 +1,24 @@
+.page-container {
+  max-width: 100vw;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+.products-grid-container {
+  margin-top: 2rem;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+// stop overflow
+.products-grid > * {
+  height: 100%;
+  overflow: hidden;
+}

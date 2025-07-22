@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { map } from 'rxjs';
 
-import { URLS } from '../../../routes/PATHS';
+import { URLS } from '../../../core/routes/PATHS';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';

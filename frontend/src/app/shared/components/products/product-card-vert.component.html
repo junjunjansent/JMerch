@@ -1,0 +1,16 @@
+<mat-card class="product-card" (click)="navigateToProduct()">
+  <img
+    mat-card-image
+    [src]="product.main_display_photo"
+    [alt]="product.product_name"
+  />
+  <mat-card-content>
+    <h3>{{ product.product_name }}</h3>
+    <p class="text-category">
+      {{ product.category }}
+    </p>
+    <p class="text-price">
+      SGD {{ product.min_price }} - {{ product.max_price }}
+    </p>
+  </mat-card-content>
+</mat-card>

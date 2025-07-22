@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use "@angular/material" as mat;
+@import "material-icons/iconfont/material-icons.css";
 
 html {
   color-scheme: light dark;
@@ -13,7 +14,27 @@ html {
 }
 
 body {
-  padding: 2rem;
+  margin: 2rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+main.page-container {
+  display: flex;
+  gap: 0.8rem;
+  max-width: 100%;
+  padding: 1.5rem 0.8rem 0.8rem;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+div.spinner-container {
+  display: flex;
+  justify-content: center;
 }
 
 // navbar

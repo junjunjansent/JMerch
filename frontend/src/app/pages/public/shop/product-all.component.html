@@ -1,1 +1,26 @@
-<h3>Product All Page</h3>
+<!-- <pre *ngIf="products.length">{{ products | json }}</pre> -->
+<main class="page-container">
+  <section>
+    <div *ngIf="isLoading" class="spinner-container">
+      <mat-progress-spinner mode="indeterminate" />
+    </div>
+
+    <product-carousel
+      *ngIf="!isLoading && latestProducts.length"
+      [products]="latestProducts"
+    ></product-carousel>
+
+    <div
+      class="products-grid-container"
+      *ngIf="!isLoading && allProducts.length"
+    >
+      <h2>All Products</h2>
+      <div class="products-grid">
+        <product-card-vert
+          *ngFor="let product of allProducts"
+          [product]="product"
+        ></product-card-vert>
+      </div>
+    </div>
+  </section>
+</main>

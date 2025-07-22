@@ -92,7 +92,7 @@ Frontend Angular Techniques:
 - [x] [Angular Material - SnackBar/Toasts](https://material.angular.dev/components/snack-bar/overview)
 - [x] [Reusable SnackBar](https://stackoverflow.com/questions/42761039/how-to-use-snackbar-on-service-to-use-in-every-component-in-angular-2)
 - [x] [Authorization - Private Routing Role Guards](https://medium.com/@matheusluna96/authentication-and-authorization-in-angular-0697ab16e465)
-- [ ] [Fetching]
+- [x] [Fetching](https://www.google.com/search?q=angular+fetching+service&oq=angular+fetching+service&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIICAEQABgWGB4yCAgCEAAYFhgeMg0IAxAAGIYDGIAEGIoFMgcIBBAAGO8FMgoIBRAAGIAEGKIE0gEIMjgyMmowajeoAgCwAgA&sourceid=chrome&ie=UTF-8)
 
 ## Challenges
 
@@ -108,6 +108,7 @@ Backend Techniques
 
 Frontend Techniques
 
+- SO MANY FILES
 - Component & Data Binding a bit difficult to conceptualise/visualise
 - Strict Typing when modularising components (more for Forms) - i.e. the typing differences of Typescript & Angular are not apparent
 - 2 layers of imports, Standalone Modules requiring imports of import

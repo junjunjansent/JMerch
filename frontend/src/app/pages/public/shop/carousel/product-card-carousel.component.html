@@ -1,0 +1,11 @@
+<mat-card class="carousel-card" (click)="navigateToProduct()">
+  <img
+    mat-card-image
+    [src]="product.main_display_photo"
+    alt="{{ product.product_name }}"
+  />
+  <mat-card-content>
+    <h3>{{ product.product_name }}</h3>
+    <p class="price">From ${{ product.min_price }}</p>
+  </mat-card-content>
+</mat-card>

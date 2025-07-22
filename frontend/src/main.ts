@@ -4,7 +4,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 // bootstrapApplication(AppComponent, appConfig);
 
 import { provideRouter } from '@angular/router';
-import { routes } from './app/routes/app.routes';
+import { routes } from './app/core/routes/app.routes';
 import { importProvidersFrom } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';

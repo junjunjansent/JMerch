@@ -59,6 +59,7 @@ const URLS = {
     HOME: '/',
     SIGN_UP: `/${PUBLIC_PATHS.SIGN_UP}`,
     SIGN_IN: `/${PUBLIC_PATHS.SIGN_IN}`,
+    SERVER: `/${PUBLIC_PATHS.SERVER}`,
     BUY: {
       PRODUCT_ALL: `/${PUBLIC_PATHS.BUY.ROOT}`,
       PRODUCT_ONE: (productId: string) =>

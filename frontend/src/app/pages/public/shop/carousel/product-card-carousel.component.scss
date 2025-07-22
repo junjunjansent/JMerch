@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  flex: 0 0 auto; /*  for horizontal carousel */
+  width: 12rem;
+  box-sizing: border-box;
+}
+
+.carousel-card {
+  cursor: pointer;
+  border-radius: 0.75rem;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  img {
+    width: 100%;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 0.75rem 0.75rem 0 0;
+  }
+
+  h3 {
+    margin: 0rem;
+    font-size: 1rem;
+  }
+
+  p.price {
+    margin: 0;
+    color: lightgreen;
+  }
+}

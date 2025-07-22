@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { URLS } from '../../routes/PATHS';
+import { URLS } from '../../../core/routes/PATHS';
 
 import {
   FormBuilder,
@@ -12,10 +12,10 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { FormFieldTextComponent } from '../../shared/components/form-field-text.component';
-import { passwordsMatchValidator } from '../../shared/validator';
-import { AuthService } from '../../core/auth.service';
-import { SnackBarService } from '../../shared/service/snack-bar.service';
+import { FormFieldTextComponent } from '../../../shared/components/form-field-text.component';
+import { passwordsMatchValidator } from '../../../shared/validator';
+import { AuthService } from '../../../core/auth.service';
+import { SnackBarService } from '../../../shared/service/snack-bar.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -72,14 +72,14 @@ export class SignUpComponent {
     if (signUpForm.valid && username && password && email) {
       this.authService.signUp({ username, password, email }).subscribe({
         next: (res) => {
-          console.log('Signed Up with token:', res.token);
+          // console.log('Signed Up with token:', res.token);
           this.snackBar.success('Sign Up Successful');
           signUpForm.reset();
           this.router.navigate([this.URLS.PUBLIC.HOME]);
         },
         error: (err) => {
+          // console.log('Error: ', err.error.error);
           const errArray = err.error.error;
-          console.log('Error: ', err.error.error);
           this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
         },
       });
