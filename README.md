@@ -66,12 +66,15 @@ Backend Flask Techniques:
 - [x] [Error Handling](https://flask.palletsprojects.com/en/stable/api/#flask.Flask.errorhandler)
 - [x] Connection & Cursor Handling
 - [x] [Faker Creation](https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html)
-- [ ] Separate Project - FastAPI (Pydantic) & SQLAlchemy
 - [x] Marshmallow validating (Minor)
+- [ ] Separate Project - FastAPI (Pydantic) & SQLAlchemy
 
 Database PostgreSQL Techniques:
 
 - [x] [LIKE & POSIX operator for PostgreSQL](https://www.postgresql.org/docs/current/functions-matching.html)
+- [x] [NOT NULL vs DEFAULT usage]
+- [x] [ON DELETE CASCADE](https://neon.com/postgresql/postgresql-tutorial/postgresql-delete-cascade)
+- [ ] [UUID usage]
 
 Frontend Angular Techniques:
 
