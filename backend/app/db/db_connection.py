@@ -11,12 +11,23 @@ load_dotenv()
 def get_db_connection():
     # db_url = os.getenv('DATABASE_URL')
     # connection = psycopg2.connect(db_url)
+    host = os.getenv('POSTGRES_HOST')
+    user = os.getenv('POSTGRES_USERNAME')
+    password = os.getenv('POSTGRES_PASSWORD')
+
+    if not host or not user or not password:
+        raise APIError(
+            status=500,
+            title=f"Internal Server Error: dot_env",
+            detail="Unable to get DB details from dot_env", 
+            pointer="db > db_connection.py")
+
     try:
         connection = psycopg2.connect(
-            host=os.getenv('POSTGRES_HOST'), 
+            host=host, 
             database='jmerch',
-            user=os.getenv('POSTGRES_USERNAME'),
-            password=os.getenv('POSTGRES_PASSWORD'),
+            user=user,
+            password=password,
             sslmode="require")
         cursor = connection.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
         return (connection, cursor) # better to return tuple to maintain order

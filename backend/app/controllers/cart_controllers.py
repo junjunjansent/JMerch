@@ -68,6 +68,137 @@ def create_cart_controller(data: dict, user_id: str ) -> dict :
 def update_cart_controller(data: dict, user_id: str ) -> dict :
     return
 
+# const updateCart = async (req, res, next) => {
+#   try {
+#     // qtyChange: number that is not zero, //qtySet: up to productVarAvailableQty
+#     const { itemId, qtyChange, qtySet } = req.body;
+
+#     // quick check only qtyChange or qtySet is given (written like this to handle zeros too)
+#     const hasQtyChange = qtyChange !== undefined;
+#     const hasQtySet = qtySet !== undefined;
+#     if ((hasQtyChange && hasQtySet) || (!hasQtyChange && !hasQtySet)) {
+#       throw new ApiError({
+#         status: 400,
+#         source: { pointer: "cartController.js" },
+#         title: "Bad Request: Too many requests to Qty",
+#         detail: "Cart Item Qty can only be added/subtracted OR set, not both.",
+#       });
+#     }
+
+#     // check if item exists in Shop
+#     // if item doesnt exists in Product Var, delete
+#     // if item's mainProduct doesnt exist Product, delete
+#     // if !item.mainProduct.isActive, delete
+#     const itemExisting = await ProductVariant.findById(itemId)
+#       .select("mainProduct productVarAvailableQty")
+#       .populate({
+#         path: "mainProduct",
+#         select: "productIsActive",
+#       });
+#     const isExistingItem =
+#       itemExisting &&
+#       itemExisting.mainProduct &&
+#       itemExisting.mainProduct.productIsActive;
+#     if (!isExistingItem) {
+#       throw new ApiError({
+#         status: 410,
+#         source: { pointer: "cartController.js" },
+#         title: "Gone: Product Var Item does not Exist",
+#         detail: "Selected Product Var Item no longer exists.",
+#       });
+#     }
+
+#     // -------- get all cart details (selected fields) - but mongoose can only do nested populate if defined
+#     const user = getUserFromRequest(req);
+#     const cart = await Cart.findOne({ buyer: user._id }).select("cartItems");
+
+#     // const { cartId } = req.params;
+#     // if (!cartId) {
+#     //   throw new ApiError({
+#     //     status: 400,
+#     //     source: { pointer: "cartController.js" },
+#     //     title: "Bad Request: No Cart ID Given",
+#     //     detail: "No Cart ID was passed for update.",
+#     //   });
+#     // }
+
+#     if (!cart) {
+#       // create cart if it doesnt exist
+#       const qtyChangeValidated = numberRangeValidator(qtyChange, { min: 1 });
+#       const newCart = await Cart.create({
+#         buyer: user._id,
+#         cartItems: [{ item: itemId, qty: qtyChangeValidated }],
+#       });
+#       return res.status(201).json({ cart: newCart });
+#     }
+
+#     // check if item exists in Cart - gets index in cartItems and qty
+#     // if no item in cart, will need to add new Item
+#     const itemIndexinCartItems = cart.cartItems.findIndex(({ item }) =>
+#       item._id.equals(itemId)
+#     );
+#     const currentQty =
+#       itemIndexinCartItems === -1
+#         ? 0
+#         : cart.cartItems[itemIndexinCartItems].qty;
+#     let newQty = currentQty;
+
+#     // -------- checking for qtyChange & qty Set
+#     if (hasQtyChange) {
+#       const qtyChangeValidated = numberRangeValidator(qtyChange, {
+#         min: -Infinity,
+#       });
+#       if (qtyChangeValidated === 0) {
+#         throw new ApiError({
+#           status: 400,
+#           source: { pointer: "cartController.js" },
+#           title: "Bad Request: QtyChange given is 0",
+#           detail: "No change requested to Cart Item Qty.",
+#         });
+#       }
+#       newQty = currentQty + qtyChangeValidated;
+#     } else if (hasQtySet) {
+#       const qtySetValidated = numberRangeValidator(qtySet);
+#       newQty = qtySetValidated;
+#     }
+
+#     // ——------ handle newQty
+
+#     if (newQty < 0) {
+#       throw new ApiError({
+#         status: 400,
+#         source: { pointer: "cartController.js" },
+#         title: "Bad Request: newQty becomes a negative number",
+#         detail: "Cannot make Cart Item Qty to a negative number.",
+#       });
+#     } else if (newQty === 0) {
+#       cart.cartItems.pull({ item: itemId });
+#     } else if (newQty <= itemExisting.productVarAvailableQty) {
+#       if (itemIndexinCartItems === -1) {
+#         cart.cartItems.push({ item: itemId, qty: newQty });
+#       } else {
+#         cart.cartItems[itemIndexinCartItems].qty = newQty;
+#       }
+#     } else if (newQty > itemExisting.productVarAvailableQty) {
+#       throw new ApiError({
+#         status: 400,
+#         source: { pointer: "cartController.js" },
+#         title: "Bad Request: newQty too large",
+#         detail: `newQty cannot be larger than selected item's available Qty - ${itemExisting.productVarAvailableQty}.`,
+#       });
+#     }
+
+#     await cart.save();
+
+#     res.status(201).json({ cart });
+
+#     // // TODO: need some logic to start saving Qtys as not available if it's in someone's cart (maybe in checkout?)
+#   } catch (err) {
+#     next(err);
+#   }
+# };
+
+
 
 
 def destroy_cart_controller(user_id: str ) -> dict :
