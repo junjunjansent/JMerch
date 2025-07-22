@@ -55,10 +55,10 @@ def generate_product(user_list):
                 "product_description": randomize_none(fake.paragraph(), 0.3),
                 "owner_user_id": random.choice(user_list),
                 "category": random.choice(product_categories_tuple),
-                "main_display_photo": randomize_none(fake.image_url(), 0.3),
-                "default_delivery_time": randomize_none(random.randint(1,60), 0.6),
+                "main_display_photo": randomize_none(fake.image_url(), 0.3, 'https://pixabay.com/illustrations/box-packaging-mockup-paper-box-6345764/'),
+                "default_delivery_time": randomize_none(random.randint(1,60), 0.6, 30),
                 # "viewable_to_users_list": fake.,
-                "is_active": randomize_none(False, 0.7),
+                "is_active": randomize_none(False, 0.7, True),
                 "created_at": fake.date_time_between(start_date='-4y', end_date='-3y')}
         except:
             print(">> FAIL due to some hidden has issues")
@@ -74,7 +74,7 @@ def generate_product_variants(products_id_list):
                 "qty_inventory": qty_inventory,
                 "qty_available": randomize_none(random.randint(0,qty_inventory), 0.7, qty_inventory),
                 "price": round(random.uniform(0.01, 1000),2) ,
-                "display_photo": randomize_none(fake.image_url(), 0.3),
+                "display_photo": randomize_none(fake.image_url(), 0.3, 'https://pixabay.com/illustrations/box-packaging-mockup-paper-box-6345764/'),
                 "created_at": fake.date_time_between(start_date='-3y', end_date='now')}
         except:
             print(">> FAIL due to some hidden has issues")

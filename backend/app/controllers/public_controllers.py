@@ -1,11 +1,14 @@
 import psycopg2
 from app.db.db_connection import get_db_connection
-from backend.app.models.users_model import create_user, show_user_via_username_or_email, show_basic_user, index_users
+from app.models.users_model import create_user, show_user_via_username_or_email, show_basic_user, index_users
+from app.models.products_model import index_products, show_product
 
 from app.utils.input_validator import username_validator, email_validator, password_validator
 from app.utils.error_handler import APIError, raise_api_error
 from app.utils.pyjwt import jwt_encoder
 from app.utils.bcrypt import hash_password, is_valid_hashed_pw
+
+#  ------ User -----
 
 def sign_up_controller(data: dict) -> dict:
     # check data values
@@ -127,6 +130,30 @@ def index_users_controller()-> list[dict]:
         (connection, cursor) = get_db_connection()
         user_list = index_users(cursor)
         return user_list
+    except Exception as err:
+        raise_api_error(err, pointer="public_controller.py")
+    finally:
+        cursor.close()
+        connection.close()
+
+#  ------ PRODUCTS -----
+
+def index_products_controller()-> list[dict]:
+    try: 
+        (connection, cursor) = get_db_connection()
+        products_list = index_products(cursor)
+        return products_list
+    except Exception as err:
+        raise_api_error(err, pointer="public_controller.py")
+    finally:
+        cursor.close()
+        connection.close()
+
+def show_product_controller(product_id):
+    try: 
+        (connection, cursor) = get_db_connection()
+        product = show_product(cursor, str(product_id))
+        return product
     except Exception as err:
         raise_api_error(err, pointer="public_controller.py")
     finally:

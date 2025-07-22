@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS products (
   category VARCHAR NOT NULL CHECK (lower(category) IN ('tops', 'bottoms', 'headwear', 'bags', 'accessories', 'misc')),
   main_display_photo VARCHAR DEFAULT 'https://pixabay.com/illustrations/box-packaging-mockup-paper-box-6345764/',
   default_delivery_time INT DEFAULT 30 CHECK (default_delivery_time >= 1),
-  viewable_to_users_list INt[] DEFAULT NULL,
+  viewable_to_users_list INT[] DEFAULT NULL,
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

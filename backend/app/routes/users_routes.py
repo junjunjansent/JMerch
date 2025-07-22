@@ -13,7 +13,7 @@ def show_owner_route():
 
 @users_blueprint.route("/owner", methods=['PUT'])
 @token_required
-def update_owner():
+def update_owner_route():
     data = request.get_json()
     user_id = str(g.user['id'])
     # will return an updated token
@@ -22,7 +22,7 @@ def update_owner():
 
 @users_blueprint.route("/owner/password", methods=['PUT'])
 @token_required
-def update_owner_password():
+def update_owner_password_route():
     data = request.get_json()
     user_id = str(g.user['id'])
     updated_user = update_owner_password_controller(data, user_id)

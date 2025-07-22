@@ -1,10 +1,24 @@
 import psycopg2.extensions
 from app.utils.error_handler import APIError
 
-def index_product(cursor: psycopg2.extensions.cursor, user_id: str) -> list[dict]:
+def convert_user_ids_to_usernames(cursor: psycopg2.extensions.cursor, user_ids: list[int]) -> list[str]:
+    if not user_ids:
+        return []
+    # def find_username(user_id):
+    #     cursor.execute("SELECT username FROM users WHERE id = %s;", (user_id,))
+    #     return cursor.fetchone().get("username")
+    # return [find_username(user_id) for user_id in user_ids]
+    cursor.execute("SELECT username FROM users WHERE id = ANY(%s);", (user_ids,))
+    username_dictionary = cursor.fetchall()
+    return [entry[0] for entry in username_dictionary]
+
+def index_products(cursor: psycopg2.extensions.cursor, user_id: str = None) -> list[dict]:
     # either viewable_to_users_list = NULL (viewable to ALL) or user_id in viewable_to_users_list
-    # if product not active, dont show
-    # if product doesnt have variants, filter out --> INNER JOIN
+    # if product not active, maybe show diff colour
+    # if product does not have variants, filter out --> INNER JOIN
+    # >> from username: convert owner_user_id to their username
+    # >> from variants: min price, max price, avail Qty, created_at (latest)
+    # note if i use in aggregate function or have join, i need to indicate in GROUP BY
     sql_query = """
         SELECT 
             products.id,
@@ -12,6 +26,7 @@ def index_product(cursor: psycopg2.extensions.cursor, user_id: str) -> list[dict
             users.username AS owner_username,
             products.category,
             products.main_display_photo,
+            products.is_active,
             MIN(variants.price) AS min_price,
             MAX(variants.price) AS max_price,
             SUM(variants.qty_available) AS qty_total_available,
@@ -19,31 +34,103 @@ def index_product(cursor: psycopg2.extensions.cursor, user_id: str) -> list[dict
         FROM products
             JOIN users ON products.owner_user_id = users.id
             JOIN product_variants AS variants ON variants.main_product_id = products.id
-        WHERE products.is_active = true 
-            AND (products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))
+        WHERE (products.owner_user_id = %s) 
+            OR (products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))
         GROUP BY products.id, users.username
-        ORDER BY latest_variant_created DESC;
+        ORDER BY product_name ASC;
     """
-    
-    cursor.execute(sql_query, (user_id,))
+    cursor.execute(sql_query, (user_id, user_id))
     return cursor.fetchall()
-    
-    
-    
-    
-    
-    # cursor.execute("SELECT id, product_name, owner_user_id, category, main_display_photo FROM products WHERE is_active = true AND viewable_to_users_list = NULL")
-    
 
-    # # to each product, i want to:
-    # # translate owner_user_id to username from users
-    # # search their product variant and inside the dictionary add these properties
-    # # from variants: min price, max price, avail Qty, created_at (latest)
-    # return cursor.fetchall()
+def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str = "buyer", user_id: str = None):
+    # also to index all variants, {product: xx, variants: []}
+    result = {"product": {}, "variants": []}
 
-def show_product(cursor: psycopg2.extensions.cursor, ):
-    # also to index all variants
-    return
+    match role:
+        case "buyer":
+            sql_query_product= """
+                SELECT 
+                    products.id,
+                    products.product_name,
+                    products.product_description,
+                    users.username AS owner_username,
+                    products.category,
+                    products.main_display_photo,
+                    products.default_delivery_time,
+                    products.created_at,
+                    products.is_active
+                FROM products
+                    JOIN users ON products.owner_user_id = users.id
+                WHERE products.id = %s
+                    AND (products.owner_user_id = %s OR products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))
+            """
+            sql_query_variants="""
+                SELECT 
+                    id,
+                    design_name,
+                    qty_available,
+                    price,
+                    display_photo,
+                    created_at
+                FROM product_variants AS variants
+                WHERE main_product_id = %s
+                ORDER BY created_at ASC;
+            """
+            cursor.execute(sql_query_product, (product_id, user_id, user_id))
+            result["product"] = cursor.fetchone()
+            if result.get("product"):
+                cursor.execute(sql_query_variants, (product_id, ))
+                result["variants"] = cursor.fetchall()
+
+        case "seller":
+            # products - can see viewable_to_users_list, updated_at (BUT need to convert)
+            # variants - can see qty_inventory, updated_at
+            sql_query_product= """
+                SELECT 
+                    products.id,
+                    products.product_name,
+                    products.product_description,
+                    users.username AS owner_username,
+                    products.category,
+                    products.main_display_photo,
+                    products.default_delivery_time,
+                    products.created_at,
+                    products.is_active,
+                    products.viewable_to_users_list,
+                    products.updated_at
+                FROM products
+                    JOIN users ON products.owner_user_id = users.id
+                WHERE products.id = %s
+                    AND (products.owner_user_id = %s OR products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))
+            """
+            sql_query_variants="""
+                SELECT 
+                    id,
+                    design_name,
+                    qty_available,
+                    price,
+                    display_photo,
+                    created_at,
+                    qty_inventory,
+                    updated_at
+                FROM product_variants AS variants
+                WHERE main_product_id = %s
+                ORDER BY created_at ASC;
+            """
+            cursor.execute(sql_query_product, (product_id, user_id, user_id))
+            result["product"] = cursor.fetchone()
+            if result.get("product"):
+                cursor.execute(sql_query_variants, (product_id,))
+                result["variants"] = cursor.fetchall()
+
+    # transform the list of IDs to usernames, not ordered
+    if result.get("product") and result.get("product").get("viewable_to_users_list"):
+        result["product"]["viewable_to_users_list"] = convert_user_ids_to_usernames(result["product"]["viewable_to_users_list"])
+    return result
+
+
+
+
 
 # ----- AUTHORIZED -----
 
