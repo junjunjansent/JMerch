@@ -1,1 +1,110 @@
-<h3>Product One Page</h3>
+<div *ngIf="isLoading" class="spinner-container">
+  <mat-progress-spinner mode="indeterminate" />
+</div>
+
+<!-- <pre *ngIf="product">{{ product | json }}</pre> -->
+<main *ngIf="!isLoading && product" class="buy-one-area">
+  <mat-card class="product-card">
+    <img
+      mat-card-image
+      [src]="selectedVariant?.display_photo || product.main_display_photo"
+      [alt]="product.product_name"
+      class="product-img"
+    />
+
+    <mat-card-content class="product-details">
+      <h2>{{ product.product_name }}</h2>
+      <p *ngIf="product.product_description">
+        {{ product.product_description }}
+      </p>
+
+      <div class="product-header">
+        <info-text-card
+          label="Category"
+          [value]="product.category"
+        ></info-text-card>
+        <info-text-card
+          label="Ave. Delivery Time (Days)"
+          [value]="product.default_delivery_time ?? null"
+        ></info-text-card>
+        <info-text-card label="Sold by" [value]="product.owner_username">
+        </info-text-card>
+      </div>
+
+      <section>
+        <h2>Designs:</h2>
+        <div class="design-buttons">
+          <button
+            mat-button
+            *ngFor="let variant of product.variants; let i = index"
+            [id]="variant.variant_id"
+            (click)="selectVariant(i)"
+            [color]="selectedVariantIndex === i ? 'primary' : undefined"
+            type="button"
+          >
+            {{ variant.design_name }}
+          </button>
+        </div>
+
+        <div class="price-quantity">
+          <div class="product-price">
+            Price: ${{ selectedVariant?.price || "N/A" }}
+          </div>
+          <div class="product-quantity">
+            Qty: {{ selectedVariant?.qty_available || 0 }}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Add to Cart Here:</h3>
+        <form class="purchase-form">
+          <mat-form-field appearance="fill" class="qty-select">
+            <mat-label>Quantity</mat-label>
+            <mat-select
+              [value]="qtyToAdd"
+              (selectionChange)="qtyToAdd = $event.value"
+            >
+              <mat-option
+                *ngFor="let qtyOption of qtyOptions"
+                [value]="qtyOption"
+              >
+                {{ qtyOption }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="buttons-area">
+            <button
+              mat-raised-button
+              color="primary"
+              *ngIf="user; else loginPrompt"
+              [disabled]="!product.is_active || isAddingToCart"
+              (click)="handleAddToCart()"
+              type="button"
+            >
+              {{
+                isAddingToCart
+                  ? "Adding..."
+                  : product.is_active
+                  ? "Add to Cart"
+                  : "User has disabled purchase"
+              }}
+            </button>
+
+            <ng-template #loginPrompt>
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="navigateToSignIn()"
+                type="button"
+              >
+                Login to Start Buying
+              </button>
+            </ng-template>
+          </div>
+        </form>
+      </section>
+    </mat-card-content>
+  </mat-card>
+</main>

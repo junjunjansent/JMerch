@@ -12,6 +12,11 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
+  // Angular uses Observable instead of Promises
+  // Observables allow emitting of multiple values over time, ideal for streams of data and UI changes
+  // allow us to cancel request if client unsubscribes
+  // compose operators to retry/debounce/timeout
+  // Observables are also lazy, so HTTP request only execute when subscribed
   getProducts(): Observable<{ products: Product[] }> {
     return this.http.get<{ products: Product[] }>(this.productsURL);
   }

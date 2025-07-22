@@ -1,6 +1,6 @@
 export interface Product {
-  category: string;
   id: number;
+  category: string;
   is_active: boolean;
   main_display_photo: string;
   max_price: string;
@@ -9,4 +9,16 @@ export interface Product {
   owner_username: string;
   product_name: string;
   qty_total_available: number;
+  product_description?: string | null;
+  default_delivery_time?: number;
+  created_at?: string;
+  variants?: Variant[];
+}
+export interface Variant {
+  variant_id: number;
+  design_name: string;
+  display_photo: string;
+  price: number;
+  qty_available: number;
+  created_at: string;
 }
