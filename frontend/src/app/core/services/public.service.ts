@@ -6,7 +6,7 @@ import { type Product } from '../types/product';
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService {
+export class PublicService {
   private basePublicURL = `${import.meta.env['VITE_DEV_BASE_URL']}/public`;
   private productsURL = `${this.basePublicURL}/products`;
 

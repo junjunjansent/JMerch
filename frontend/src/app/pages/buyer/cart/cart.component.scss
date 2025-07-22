@@ -1,0 +1,33 @@
+.cart-page-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 1rem;
+
+  .product-photo {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .cart-table-container {
+    margin-top: 1rem;
+
+    table {
+      width: 100%;
+    }
+  }
+
+  .cart-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+  }
+
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+  }
+}

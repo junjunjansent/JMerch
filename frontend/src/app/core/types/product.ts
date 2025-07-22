@@ -9,9 +9,9 @@ export interface Product {
   owner_username: string;
   product_name: string;
   qty_total_available: number;
-  product_description?: string | null;
+  product_description?: string;
   default_delivery_time?: number;
-  created_at?: string;
+  created_at: string;
   variants?: Variant[];
 }
 export interface Variant {

@@ -7,6 +7,7 @@ def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         authorization_header = request.headers.get('Authorization')
+
         if authorization_header is None:
             raise APIError(
                     status=401,
@@ -30,6 +31,7 @@ def token_required(f):
             g.user = token_data
         
         except Exception as err:
+            print(err)
             raise_api_error(err, pointer="middlewares > auth_middleware.py")
 
         # because it is not dependent on anything in try/except block, so can put outside.

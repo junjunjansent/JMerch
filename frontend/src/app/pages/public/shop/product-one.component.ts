@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { URLS } from '../../../core/routes/PATHS';
 
 import { AuthService } from '../../../core/auth.service';
-import { ProductService } from '../../../core/services/product.service';
+import { PublicService } from '../../../core/services/public.service';
 import { SnackBarService } from '../../../shared/service/snack-bar.service';
 import { type Product, type Variant } from '../../../core/types/product';
 
@@ -43,7 +43,7 @@ export class ProductOneComponent {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private productService: ProductService,
+    private publicService: PublicService,
     private snackBar: SnackBarService
   ) {
     this.route.paramMap.subscribe((params) => {
@@ -65,7 +65,7 @@ export class ProductOneComponent {
 
   loadProduct(id: number) {
     this.isLoading = true;
-    this.productService.getProductById(id).subscribe({
+    this.publicService.getProductById(id).subscribe({
       next: (res) => {
         this.product = res.product;
         this.selectVariant(0);

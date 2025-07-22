@@ -40,6 +40,7 @@ def index_products(cursor: psycopg2.extensions.cursor, user_id: str = None) -> l
         SELECT 
             products.id,
             products.product_name,
+            products.created_at,
             users.username AS owner_username,
             products.category,
             products.main_display_photo,

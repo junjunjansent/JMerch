@@ -6,7 +6,7 @@ import { URLS } from '../../../core/routes/PATHS';
 
 import dayjs from 'dayjs';
 import { type Product } from '../../../core/types/product';
-import { ProductService } from '../../../core/services/product.service';
+import { PublicService } from '../../../core/services/public.service';
 import { ProductCardVertComponent } from '../../../shared/components/products/product-card-vert.component';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -32,7 +32,7 @@ export class ProductAllComponent {
   isLoading = true;
 
   constructor(
-    private productService: ProductService,
+    private publicService: PublicService,
     private router: Router,
     private snackBar: SnackBarService
   ) {
@@ -40,10 +40,10 @@ export class ProductAllComponent {
   }
 
   loadAllProducts() {
-    this.productService.getProducts().subscribe({
+    this.publicService.getProducts().subscribe({
       next: (res) => {
-        this.allProducts = res.products;
         this.isLoading = false;
+        this.allProducts = res.products;
 
         // set latestProducts using dayjs functions
         const sixMonthsAgo = dayjs().subtract(6, 'month');
@@ -55,7 +55,7 @@ export class ProductAllComponent {
         // console.log('Error: ', err.error.error);
         const errArray = err.error.error;
         this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
-        this.router.navigate([URLS.PUBLIC.SERVER]); // or your URLS.PUBLIC.ERROR path
+        this.router.navigate([URLS.PUBLIC.SERVER]);
       },
     });
   }

@@ -1,1 +1,60 @@
-<h3>About Main Page</h3>
+<mat-progress-spinner *ngIf="isLoading" mode="indeterminate" class="spinner" />
+
+<main *ngIf="!isLoading && userProfile" class="page-container">
+  <section class="section-info">
+    <div class="title-bar">
+      <mat-icon *ngIf="!userProfile.profile_photo" class="avatar-icon"
+        >account_circle</mat-icon
+      >
+      <img
+        *ngIf="userProfile.profile_photo"
+        class="avatar-img"
+        [src]="userProfile.profile_photo"
+        alt="Profile Photo"
+      />
+      <h2 class="title-text">You Details, {{ userProfile.username }}</h2>
+    </div>
+
+    <div class="description-bar">
+      <p class="description-text">Joined us on {{ created_at }}</p>
+      <div class="description-btns">
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="navigateToEditProfile()"
+          class="action-btn"
+        >
+          Edit Profile
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          (click)="navigateToEditPassword()"
+          class="action-btn"
+        >
+          Change Password
+        </button>
+      </div>
+    </div>
+
+    <article class="info-groups-container">
+      <mat-list *ngFor="let group of userInfoGroups" class="info-group">
+        <mat-list-item
+          *ngFor="let item of group"
+          class="info-list-item"
+          role="listitem"
+        >
+          <info-text-card
+            [label]="item.label"
+            [value]="item.value"
+            class="info-card"
+          ></info-text-card>
+        </mat-list-item>
+      </mat-list>
+    </article>
+  </section>
+
+  <aside class="aside-img">
+    <img src="src/assets/JMerch_logo.png" alt="Logo" class="img-logo" />
+  </aside>
+</main>

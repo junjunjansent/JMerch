@@ -93,12 +93,15 @@ Frontend Angular Techniques:
 - [x] [Reusable SnackBar](https://stackoverflow.com/questions/42761039/how-to-use-snackbar-on-service-to-use-in-every-component-in-angular-2)
 - [x] [Authorization - Private Routing Role Guards](https://medium.com/@matheusluna96/authentication-and-authorization-in-angular-0697ab16e465)
 - [x] [Fetching](https://www.google.com/search?q=angular+fetching+service&oq=angular+fetching+service&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIICAEQABgWGB4yCAgCEAAYFhgeMg0IAxAAGIYDGIAEGIoFMgcIBBAAGO8FMgoIBRAAGIAEGKIE0gEIMjgyMmowajeoAgCwAgA&sourceid=chrome&ie=UTF-8)
+- [ ] [Pipes]
+- [ ] [Better Grasp of Observables]
 
 ## Challenges
 
 Backend Techniques
 
 - NOT NULL vs DEFAULT
+- strings vs int for IDs :\
 - Difficulty handling NULL data when importing
 - formatting of Python not supported by Prettier
 - Handling of SQL as strings.... (I guess Spell Checker helps)

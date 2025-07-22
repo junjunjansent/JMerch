@@ -7,6 +7,7 @@ users_blueprint = Blueprint("users", __name__, url_prefix="/api/users")
 @users_blueprint.route("/owner", methods=['GET'])
 @token_required
 def show_owner_route():
+    print("[show_owner_route] Route hit")
     user_id = str(g.user['id'])
     user = show_full_user_controller(user_id)
     return jsonify({"user": user}), 200

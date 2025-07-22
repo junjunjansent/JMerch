@@ -45,7 +45,7 @@ def show_user_via_username_or_email(
     return cursor.fetchone()
 
 def show_basic_user(cursor: psycopg2.extensions.cursor, username: str) -> dict | None:
-    cursor.execute("SELECT id, username, created_at FROM users WHERE username = %s;", (username, ))
+    cursor.execute("SELECT username, created_at FROM users WHERE username = %s;", (username, ))
     return cursor.fetchone()
 
 def show_full_user(cursor: psycopg2.extensions.cursor, user_id: str) -> dict | None:

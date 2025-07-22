@@ -121,7 +121,7 @@ def update_cart_controller(data: dict, user_id: str ) -> dict :
             number_range_validator(qty_change, min=1)
             updated_cart = create_cart(cursor, user_id=user_id, variant_id=variant_id,qty_change=qty_change)
             connection.commit()
-            return updated_cart
+            return show_cart(cursor, user_id)
 
         # model - check cart_items to calculate new_qty
         cart_id = existing_cart["id"]
@@ -141,8 +141,7 @@ def update_cart_controller(data: dict, user_id: str ) -> dict :
         updated_cart = update_cart(cursor, cart_id=cart_id, cart_item_id=cart_item_id, variant_id=variant_id, qty_new=qty_new)        
         connection.commit()
 
-        updated_cart = show_cart(cursor, user_id)
-        return updated_cart
+        return show_cart(cursor, user_id)
     except Exception as err:
         connection.rollback()
         raise_api_error(err, pointer="cart_controller.py")
