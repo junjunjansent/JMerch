@@ -1,5 +1,5 @@
 from app.db.db_connection import get_db_connection
-from app.models.user_model import show_full_user, show_user_via_username_or_email, update_user, update_user_password
+from backend.app.models.users_model import show_full_user, show_user_via_username_or_email, update_user, update_user_password
 from app.utils.error_handler import raise_api_error, APIError
 from app.utils.pyjwt import jwt_encoder
 from app.utils.input_validator import username_validator, email_validator, name_validator, gender_validator, phone_number_validator, password_validator

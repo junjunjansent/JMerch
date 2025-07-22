@@ -2,6 +2,9 @@
 
 Still learning on Flask & Angular in separate learner files (commits may be slow)
 
+- All images have alt text.
+- remove console.logs
+
 Full Stack
 
 - Angular
@@ -64,7 +67,7 @@ Backend Flask Techniques:
 - [x] Connection & Cursor Handling
 - [x] [Faker Creation](https://faker.readthedocs.io/en/master/providers/faker.providers.profile.html)
 - [ ] Separate Project - FastAPI (Pydantic) & SQLAlchemy
-- [ ] Marshmallow validating
+- [x] Marshmallow validating (Minor)
 
 Database PostgreSQL Techniques:
 

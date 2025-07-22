@@ -1,6 +1,6 @@
 import psycopg2
 from app.db.db_connection import get_db_connection
-from app.models.user_model import create_user, show_user_via_username_or_email, show_basic_user, index_users
+from backend.app.models.users_model import create_user, show_user_via_username_or_email, show_basic_user, index_users
 
 from app.utils.input_validator import username_validator, email_validator, password_validator
 from app.utils.error_handler import APIError, raise_api_error

@@ -16,7 +16,7 @@ def create_user(cursor: psycopg2.extensions.cursor, data: dict) -> dict:
             status=500,
             title="Internal Server Error: Database",
             detail=str(err), 
-            pointer="user_models.py > create_user")
+            pointer="users_model.py > create_user")
 
 # main function to get token
 def show_user_via_username_or_email(
@@ -31,7 +31,7 @@ def show_user_via_username_or_email(
             status=501,
             title="Not Implemented: Database",
             detail="No Username, Email, Id given to search User Table", 
-            pointer="user_models.py > show_user_via_username_or_email")
+            pointer="users_model.py > show_user_via_username_or_email")
     elif not password_return:
         cursor.execute("SELECT id, username, email FROM users WHERE username = %s OR email =%s;", (username, email))
     elif password_return and user_id:
@@ -64,7 +64,7 @@ def update_user(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) ->
             status=500,
             title="Internal Server Error: Database",
             detail=str(err), 
-            pointer="user_models.py > update_user")
+            pointer="users_model.py > update_user")
 
 def update_user_password(cursor: psycopg2.extensions.cursor, data: dict, user_id: str) -> dict:
     try:
@@ -78,4 +78,4 @@ def update_user_password(cursor: psycopg2.extensions.cursor, data: dict, user_id
             status=500,
             title="Internal Server Error: Database",
             detail=str(err), 
-            pointer="user_models.py > update_user_password")
+            pointer="users_model.py > update_user_password")

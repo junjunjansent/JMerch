@@ -58,7 +58,7 @@ def password_validator(password: str) -> str:
 
 def name_validator(name: str) -> str:
     name = name.strip()
-    if not validate.Regexp(r'^[a-zA-Z0-9\s]{2,}$')(name):
+    if not validate.Regexp(r'^[a-zA-Z0-9_\s./-]{2,}$')(name):
         raise APIError(
             status=422,
             pointer="input_validator.py",
