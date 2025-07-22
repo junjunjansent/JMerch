@@ -78,7 +78,7 @@
             <button
               mat-raised-button
               color="primary"
-              *ngIf="user; else loginPrompt"
+              *ngIf="isLoggedIn; else loginPrompt"
               [disabled]="!product.is_active || isAddingToCart"
               (click)="handleAddToCart()"
               type="button"

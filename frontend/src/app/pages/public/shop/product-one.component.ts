@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { URLS } from '../../../core/routes/PATHS';
 
+import { AuthService } from '../../../core/auth.service';
 import { ProductService } from '../../../core/services/product.service';
 import { SnackBarService } from '../../../shared/service/snack-bar.service';
 import { type Product, type Variant } from '../../../core/types/product';
@@ -34,11 +35,14 @@ export class ProductOneComponent {
   qtyOptions: number[] = [];
   isLoading = true;
   isAddingToCart = false;
-  user = false;
+
+  // observable states from AuthService
+  isLoggedIn = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private authService: AuthService,
     private productService: ProductService,
     private snackBar: SnackBarService
   ) {
@@ -50,6 +54,12 @@ export class ProductOneComponent {
         return;
       }
       this.loadProduct(id);
+    });
+  }
+
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe((loggedIn) => {
+      this.isLoggedIn = loggedIn;
     });
   }
 
@@ -82,7 +92,7 @@ export class ProductOneComponent {
   }
 
   handleAddToCart() {
-    if (!this.user) {
+    if (!this.isLoggedIn) {
       this.navigateToSignIn();
       return;
     }

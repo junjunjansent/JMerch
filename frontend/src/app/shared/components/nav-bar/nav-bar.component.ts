@@ -51,6 +51,6 @@ export class NavBarComponent {
   signOut() {
     this.authService.signOut();
     this.snackBar.success('Sign Out Successful');
-    this.router.navigate([this.URLS.PUBLIC.HOME]);
+    this.router.navigate([URLS.PUBLIC.HOME]);
   }
 }
