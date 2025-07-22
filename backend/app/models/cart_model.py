@@ -1,6 +1,5 @@
 import psycopg2.extensions
 from app.utils.error_handler import APIError
-from app.models.products_model import show_product_variant_id
 
 def show_cart_id(cursor: psycopg2.extensions.cursor, user_id: str) -> dict:
     cursor.execute("""SELECT 
@@ -11,7 +10,10 @@ def show_cart_id(cursor: psycopg2.extensions.cursor, user_id: str) -> dict:
     return cursor.fetchone()
 
 def show_cart(cursor: psycopg2.extensions.cursor, user_id: str ) -> dict :
-    # do calculation and filtering here
+    # do calculation and filtering here. dont show:
+    # if product not active
+    # if qty_avail < 0
+    # if qty_cart < 0
     sql_query_cart="""
         SELECT
             carts.id,
@@ -41,15 +43,16 @@ def show_cart(cursor: psycopg2.extensions.cursor, user_id: str ) -> dict :
             JOIN products ON variants.main_product_id = products.id
             JOIN users ON products.owner_user_id = users.id
         WHERE cart_id = %s
-            AND qty_cart > 0
+            AND items.qty > 0
             AND products.is_active = true
-            AND variants.qty_available > 0"""
+            AND variants.qty_available > 0
+            AND (products.owner_user_id = %s OR products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))"""
 
-    cursor.execute(sql_query_cart, (user_id,))
+    cursor.execute(sql_query_cart, (user_id, ))
     cart = cursor.fetchone()
     if cart:
         cart_id = cart["id"]
-        cursor.execute(sql_query_items, (cart_id,))
+        cursor.execute(sql_query_items, (cart_id, user_id, user_id))
         items = cursor.fetchall()
         cart["items"] = items
         # calculate total also
@@ -59,15 +62,6 @@ def show_cart(cursor: psycopg2.extensions.cursor, user_id: str ) -> dict :
 
 def create_cart(cursor: psycopg2.extensions.cursor, *, user_id: str, variant_id: str, qty_change: int ) -> dict :
     try:
-        # check if variant exists
-        variant = show_product_variant_id(cursor, variant_id)
-        if not variant:
-            raise APIError(
-                status=400,
-                title="Bad Request: Variant",
-                detail="Product Variant identified does not exist", 
-                pointer="cart_model.py > create_cart")
-        
         # create cart
         cursor.execute("""INSERT INTO carts 
                             (buyer_user_id) 
@@ -76,10 +70,7 @@ def create_cart(cursor: psycopg2.extensions.cursor, *, user_id: str, variant_id:
         cart_id = show_cart_id(cursor, user_id)["id"]
 
         # create cart_items
-        cursor.execute("""INSERT INTO cart_items 
-                            (cart_id, product_variant_id, qty)
-                        VALUES (%s, %s, %s)""",
-                        (cart_id, variant_id, qty_change))
+        create_cart_item(cursor, cart_id=cart_id, variant_id=variant_id, qty_change=qty_change)
 
         # give back mini cart object (id, created_at, updated_at)
         return show_cart_id(cursor, user_id)
@@ -98,9 +89,22 @@ def create_cart(cursor: psycopg2.extensions.cursor, *, user_id: str, variant_id:
 #  * (3) obtains info of item in cartItems
 #  * (4) sets newQty via validated qtyChange or qtySet
 #  * (5) updates item in cartItems
-def update_cart(cursor: psycopg2.extensions.cursor, data: dict, user_id: str ) -> dict :
+def update_cart(cursor: psycopg2.extensions.cursor, *, cart_id: str, cart_item_id: str = None, variant_id: str, qty_new: int ) -> dict :
     try:
-        return
+        if qty_new == 0 and cart_item_id:
+            destroy_cart_item(cursor, cart_id=cart_id, variant_id=variant_id)
+        elif not cart_item_id:
+            create_cart_item(cursor, cart_id=cart_id, variant_id=variant_id,qty_change=qty_new)
+        else: 
+            update_cart_item(cursor, cart_id=cart_id, variant_id=variant_id, qty_new=qty_new)
+
+        cursor.execute("UPDATE carts SET updated_at = CURRENT_TIMESTAMP WHERE id = %s;",(cart_id,))
+        cursor.execute("""SELECT 
+                        id, created_at, updated_at 
+                   FROM carts 
+                   WHERE id = %s""",
+                     (cart_id,))
+        return cursor.fetchone()
     except Exception as err:
         err_name = err.__class__.__name__ or "Cart Database"
         raise APIError(
@@ -113,12 +117,10 @@ def update_cart(cursor: psycopg2.extensions.cursor, data: dict, user_id: str ) -
 def destroy_cart(cursor: psycopg2.extensions.cursor, user_id: str ) -> dict :
     try:   
         #find cart first
-        cursor.execute("SELECT id FROM cart WHERE buyer_user_id = %s;",
-                        (user_id,))
-        cart = cursor.fetchone()
+        cart = show_cart_id(cursor, user_id)
 
         #delete cart
-        cursor.execute("DELETE FROM cart WHERE buyer_user_id = %s;",
+        cursor.execute("DELETE FROM carts WHERE buyer_user_id = %s;",
                         (user_id,))
 
         return cart
@@ -129,3 +131,64 @@ def destroy_cart(cursor: psycopg2.extensions.cursor, user_id: str ) -> dict :
             title=f"Internal Server Error: {err_name}",
             detail=str(err), 
             pointer="cart_model.py > destroy_cart")
+
+
+# ---------- Cart Item
+
+def show_cart_item(cursor: psycopg2.extensions.cursor, *, cart_id: str, variant_id: str) -> dict:
+    cursor.execute("""SELECT 
+                        id, qty 
+                   FROM cart_items 
+                   WHERE cart_id = %s AND product_variant_id = %s""",
+                     (cart_id, variant_id))
+    return cursor.fetchone()
+
+
+def create_cart_item(cursor: psycopg2.extensions.cursor, *, cart_id: str, variant_id: str, qty_change: int) -> dict:
+    try:
+        cursor.execute("""INSERT INTO cart_items 
+                            (cart_id, product_variant_id, qty)
+                        VALUES (%s, %s, %s)""",
+                        (cart_id, variant_id, qty_change))
+
+        return show_cart_item(cursor, cart_id=cart_id, variant_id=variant_id)
+    except Exception as err:
+        err_name = err.__class__.__name__ or "Cart Database"
+        raise APIError(
+            status=500,
+            title=f"Internal Server Error: {err_name}",
+            detail=str(err), 
+            pointer="cart_model.py > create_cart_item")
+
+def update_cart_item(cursor: psycopg2.extensions.cursor, *, cart_id: str, variant_id: str, qty_new: int) -> dict:
+    try:
+        cursor.execute("""UPDATE cart_items 
+                        SET qty = %s
+                        WHERE cart_id = %s AND product_variant_id = %s""",
+                        (qty_new, cart_id, variant_id))
+
+        return show_cart_item(cursor, cart_id=cart_id, variant_id=variant_id)
+    except Exception as err:
+        err_name = err.__class__.__name__ or "Cart Database"
+        raise APIError(
+            status=500,
+            title=f"Internal Server Error: {err_name}",
+            detail=str(err), 
+            pointer="cart_model.py > update_cart_item")
+
+def destroy_cart_item(cursor: psycopg2.extensions.cursor, *, cart_id: str, variant_id: str) -> dict:
+    try:
+        # find item
+        cart_item = show_cart_item(cursor, cart_id=cart_id, variant_id=variant_id)
+        
+        cursor.execute("""DELETE FROM cart_items 
+                        WHERE cart_id=%s AND product_variant_id = %s;""",
+                        (cart_id, variant_id))
+        return cart_item
+    except Exception as err:
+        err_name = err.__class__.__name__ or "Cart Database"
+        raise APIError(
+            status=500,
+            title=f"Internal Server Error: {err_name}",
+            detail=str(err), 
+            pointer="cart_model.py > destroy_cart_item")

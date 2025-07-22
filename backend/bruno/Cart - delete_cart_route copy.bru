@@ -1,10 +1,10 @@
 meta {
-  name: Cart - create_cart_route
+  name: Cart - delete_cart_route copy
   type: http
-  seq: 12
+  seq: 14
 }
 
-post {
+delete {
   url: http://127.0.0.1:5000/api/cart/
   body: json
   auth: bearer
@@ -17,6 +17,6 @@ auth:bearer {
 body:json {
   {
     "qtyChange": 12,
-    "variantId": 681
+    "variantId": 669
   }
 }

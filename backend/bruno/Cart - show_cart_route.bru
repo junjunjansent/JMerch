@@ -1,10 +1,10 @@
 meta {
-  name: Cart - create_cart_route
+  name: Cart - show_cart_route
   type: http
-  seq: 12
+  seq: 11
 }
 
-post {
+get {
   url: http://127.0.0.1:5000/api/cart/
   body: json
   auth: bearer
@@ -12,11 +12,4 @@ post {
 
 auth:bearer {
   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzgsInVzZXJuYW1lIjoidXNlcjEiLCJlbWFpbCI6InVzZXIxQHRlc3QuY29tIiwicGFzc3dvcmQiOiIkMmIkMTIkMFJLODc0YkhqZWdvVFdSaS5DWmtXLmxiWGpKMHl2OERuM1ZOQVNYdnJCRzFxa2xYVnlUMUcifQ.uxbADKdALPq1e2xHvg2T2XhSobd1tU7znWverng4Vgc
-}
-
-body:json {
-  {
-    "qtyChange": 12,
-    "variantId": 681
-  }
 }

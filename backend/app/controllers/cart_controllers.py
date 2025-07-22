@@ -1,5 +1,6 @@
 from app.db.db_connection import get_db_connection
-from app.models.cart_model import show_cart_id, show_cart, create_cart, update_cart, destroy_cart
+from app.models.cart_model import show_cart_id, show_cart_item, destroy_cart_item, show_cart, create_cart, update_cart, destroy_cart
+from app.models.products_model import show_product_variant_id
 from app.utils.error_handler import raise_api_error, APIError
 from app.utils.input_validator import number_range_validator
 from datetime import datetime, timedelta
@@ -21,7 +22,7 @@ def show_cart_controller(user_id: str ) -> dict | None :
         # model - delete cart if last updated is >15 days ago
         # model - check if cart Item is empty, delete cart
         is_cart_expired = cart.get("updated_at") and cart.get("updated_at") < datetime.utcnow() - timedelta(days=15)
-        if cart.get("items") or is_cart_expired:
+        if not cart.get("items") or is_cart_expired:
             destroy_cart(cursor, user_id)
             connection.commit()
             return None
@@ -45,6 +46,15 @@ def create_cart_controller(data: dict, user_id: str ) -> dict :
     try:
         (connection, cursor) = get_db_connection()
 
+         # model - check if variant exists
+        variant = show_product_variant_id(cursor, user_id=user_id,variant_id=variant_id)
+        if not variant:
+            raise APIError(
+                status=400,
+                title="Bad Request: Variant",
+                detail="Product Variant identified does not exist", 
+                pointer="cart_controller.py > create_cart_controller")
+
         # model - check if cart exists
         existing_cart = show_cart_id(cursor, user_id)
         if existing_cart:
@@ -56,6 +66,8 @@ def create_cart_controller(data: dict, user_id: str ) -> dict :
 
         new_cart = create_cart(cursor, user_id=user_id, variant_id=variant_id, qty_change=qty_change)
         connection.commit()
+
+        new_cart = show_cart(cursor, user_id)
         return new_cart
     except Exception as err:
         connection.rollback()
@@ -64,139 +76,79 @@ def create_cart_controller(data: dict, user_id: str ) -> dict :
         cursor.close()
         connection.close()
 
-
+#  * updateCart can check if cart exists - create cart if necessary
+#  * (1) checks if inputs from body are valid: itemId exists, qtyChange OR qtySet
+#  * (2) looks to see if cart needs to be created
+#  * (3) obtains info of item in cartItems
+#  * (4) sets newQty via validated qtyChange or qtySet
+#  * (5) updates item in cartItems
 def update_cart_controller(data: dict, user_id: str ) -> dict :
-    return
+    # extract values from data
+    # // qtyChange: number that is not zero, //qtySet: up to productVarAvailableQty
+    qty_change = data.get("qtyChange")  # from Add to Cart Buttons OR subtract in CartPage Buttons
+    qty_set = data.get("qtySet")        # from Cart Page Buttons
+    variant_id = data.get("variantId")
 
-# const updateCart = async (req, res, next) => {
-#   try {
-#     // qtyChange: number that is not zero, //qtySet: up to productVarAvailableQty
-#     const { itemId, qtyChange, qtySet } = req.body;
+    # validate values
+    qty_change = number_range_validator(qty_change) if qty_change else None
+    qty_set = number_range_validator(qty_set, min=0) if qty_set else None
+    # quick check only qtyChange or qtySet is given (written like this to handle zeros too)
+    has_qty_change = qty_change is not None
+    has_qty_set = qty_set is not None
+    if (has_qty_change and has_qty_set) or (not has_qty_change and not has_qty_set):
+        raise APIError(
+            status=400,
+            title="Bad Request: Different Qtys given",
+            detail="Cart Item Qty can only be added/subtracted OR set, not both.",
+            pointer="cart_controller.py > update_cart_controller")
+    
+    try:
+        (connection, cursor) = get_db_connection()
 
-#     // quick check only qtyChange or qtySet is given (written like this to handle zeros too)
-#     const hasQtyChange = qtyChange !== undefined;
-#     const hasQtySet = qtySet !== undefined;
-#     if ((hasQtyChange && hasQtySet) || (!hasQtyChange && !hasQtySet)) {
-#       throw new ApiError({
-#         status: 400,
-#         source: { pointer: "cartController.js" },
-#         title: "Bad Request: Too many requests to Qty",
-#         detail: "Cart Item Qty can only be added/subtracted OR set, not both.",
-#       });
-#     }
+        # model - check if variant exists
+        variant = show_product_variant_id(cursor, user_id=user_id,variant_id=variant_id)
+        if not variant:
+            raise APIError(
+                status=400,
+                title="Bad Request: Variant",
+                detail="Product Variant identified does not exist", 
+                pointer="cart_controller.py > update_cart_controller")
+        qty_available = variant["qty_available"]
 
-#     // check if item exists in Shop
-#     // if item doesnt exists in Product Var, delete
-#     // if item's mainProduct doesnt exist Product, delete
-#     // if !item.mainProduct.isActive, delete
-#     const itemExisting = await ProductVariant.findById(itemId)
-#       .select("mainProduct productVarAvailableQty")
-#       .populate({
-#         path: "mainProduct",
-#         select: "productIsActive",
-#       });
-#     const isExistingItem =
-#       itemExisting &&
-#       itemExisting.mainProduct &&
-#       itemExisting.mainProduct.productIsActive;
-#     if (!isExistingItem) {
-#       throw new ApiError({
-#         status: 410,
-#         source: { pointer: "cartController.js" },
-#         title: "Gone: Product Var Item does not Exist",
-#         detail: "Selected Product Var Item no longer exists.",
-#       });
-#     }
+        # model - check if cart exists, if no cart, create it
+        existing_cart = show_cart_id(cursor, user_id)
+        if not existing_cart:
+            number_range_validator(qty_change, min=1)
+            updated_cart = create_cart(cursor, user_id=user_id, variant_id=variant_id,qty_change=qty_change)
+            connection.commit()
+            return updated_cart
 
-#     // -------- get all cart details (selected fields) - but mongoose can only do nested populate if defined
-#     const user = getUserFromRequest(req);
-#     const cart = await Cart.findOne({ buyer: user._id }).select("cartItems");
+        # model - check cart_items to calculate new_qty
+        cart_id = existing_cart["id"]
+        cart_id = str(cart_id) if cart_id else None
+        existing_cart_item = show_cart_item(cursor, cart_id=cart_id, variant_id=variant_id)
+        qty_current = existing_cart_item["qty"] if existing_cart_item else 0
+        # >> new_qty calculation
+        if has_qty_change:
+            qty_new = qty_current + qty_change 
+        else:
+            qty_new = qty_set
+        qty_new = number_range_validator(qty_new,min=0, max=qty_available)
+        
+        # model - handle update
+        cart_item_id = existing_cart_item["id"] if existing_cart_item else None
+        cart_item_id = str(cart_item_id) if cart_item_id else None
+        updated_cart = update_cart(cursor, cart_id=cart_id, cart_item_id=cart_item_id, variant_id=variant_id, qty_new=qty_new)        
+        connection.commit()
 
-#     // const { cartId } = req.params;
-#     // if (!cartId) {
-#     //   throw new ApiError({
-#     //     status: 400,
-#     //     source: { pointer: "cartController.js" },
-#     //     title: "Bad Request: No Cart ID Given",
-#     //     detail: "No Cart ID was passed for update.",
-#     //   });
-#     // }
-
-#     if (!cart) {
-#       // create cart if it doesnt exist
-#       const qtyChangeValidated = numberRangeValidator(qtyChange, { min: 1 });
-#       const newCart = await Cart.create({
-#         buyer: user._id,
-#         cartItems: [{ item: itemId, qty: qtyChangeValidated }],
-#       });
-#       return res.status(201).json({ cart: newCart });
-#     }
-
-#     // check if item exists in Cart - gets index in cartItems and qty
-#     // if no item in cart, will need to add new Item
-#     const itemIndexinCartItems = cart.cartItems.findIndex(({ item }) =>
-#       item._id.equals(itemId)
-#     );
-#     const currentQty =
-#       itemIndexinCartItems === -1
-#         ? 0
-#         : cart.cartItems[itemIndexinCartItems].qty;
-#     let newQty = currentQty;
-
-#     // -------- checking for qtyChange & qty Set
-#     if (hasQtyChange) {
-#       const qtyChangeValidated = numberRangeValidator(qtyChange, {
-#         min: -Infinity,
-#       });
-#       if (qtyChangeValidated === 0) {
-#         throw new ApiError({
-#           status: 400,
-#           source: { pointer: "cartController.js" },
-#           title: "Bad Request: QtyChange given is 0",
-#           detail: "No change requested to Cart Item Qty.",
-#         });
-#       }
-#       newQty = currentQty + qtyChangeValidated;
-#     } else if (hasQtySet) {
-#       const qtySetValidated = numberRangeValidator(qtySet);
-#       newQty = qtySetValidated;
-#     }
-
-#     // ——------ handle newQty
-
-#     if (newQty < 0) {
-#       throw new ApiError({
-#         status: 400,
-#         source: { pointer: "cartController.js" },
-#         title: "Bad Request: newQty becomes a negative number",
-#         detail: "Cannot make Cart Item Qty to a negative number.",
-#       });
-#     } else if (newQty === 0) {
-#       cart.cartItems.pull({ item: itemId });
-#     } else if (newQty <= itemExisting.productVarAvailableQty) {
-#       if (itemIndexinCartItems === -1) {
-#         cart.cartItems.push({ item: itemId, qty: newQty });
-#       } else {
-#         cart.cartItems[itemIndexinCartItems].qty = newQty;
-#       }
-#     } else if (newQty > itemExisting.productVarAvailableQty) {
-#       throw new ApiError({
-#         status: 400,
-#         source: { pointer: "cartController.js" },
-#         title: "Bad Request: newQty too large",
-#         detail: `newQty cannot be larger than selected item's available Qty - ${itemExisting.productVarAvailableQty}.`,
-#       });
-#     }
-
-#     await cart.save();
-
-#     res.status(201).json({ cart });
-
-#     // // TODO: need some logic to start saving Qtys as not available if it's in someone's cart (maybe in checkout?)
-#   } catch (err) {
-#     next(err);
-#   }
-# };
+        updated_cart = show_cart(cursor, user_id)
+        return updated_cart
+    except Exception as err:
+        connection.rollback()
+        raise_api_error(err, pointer="cart_controller.py")
+    finally:
+        cursor.close()
+        connection.close()
 
 
 

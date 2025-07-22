@@ -12,12 +12,21 @@ def convert_user_ids_to_usernames(cursor: psycopg2.extensions.cursor, user_ids: 
     username_dictionary = cursor.fetchall()
     return [entry[0] for entry in username_dictionary]
 
-def show_product_variant_id(cursor: psycopg2.extensions.cursor, variant_id: str) -> dict:
+def show_product_variant_id(cursor: psycopg2.extensions.cursor, *, user_id: str, variant_id: str) -> dict:
     cursor.execute("""SELECT 
-                        id, design_name, created_at, updated_at 
-                   FROM product_variants 
-                   WHERE id = %s""",
-                     (variant_id,))
+                        variants.id, 
+                        variants.design_name, 
+                        variants.created_at, 
+                        variants.updated_at,
+                        variants.qty_available
+                   FROM product_variants as variants
+                        JOIN products ON variants.main_product_id = products.id
+                        JOIN users ON products.owner_user_id = users.id
+                   WHERE variants.id = %s
+                        AND variants.qty_available > 0
+                        AND products.is_active = true
+                        AND (products.owner_user_id = %s OR products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))""",
+                     (variant_id, user_id, user_id))
     return cursor.fetchone()
 
 def index_products(cursor: psycopg2.extensions.cursor, user_id: str = None) -> list[dict]:
@@ -105,7 +114,7 @@ def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str 
                 FROM products
                     JOIN users ON products.owner_user_id = users.id
                 WHERE products.id = %s
-                    AND (products.owner_user_id = %s OR products.viewable_to_users_list IS NULL OR %s = ANY(products.viewable_to_users_list))
+                    AND products.owner_user_id = %s
             """
             sql_query_variants="""
                 SELECT 
@@ -121,7 +130,7 @@ def show_product(cursor: psycopg2.extensions.cursor, product_id: str, role: str 
                 WHERE main_product_id = %s
                 ORDER BY created_at ASC;
             """
-            cursor.execute(sql_query_product, (product_id, user_id, user_id))
+            cursor.execute(sql_query_product, (product_id, user_id))
             product = cursor.fetchone()
             if product:
                 cursor.execute(sql_query_variants, (product_id,))
