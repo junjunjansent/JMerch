@@ -5,6 +5,7 @@ Still learning on Flask & Angular in separate learner files (commits may be slow
 Full Stack
 
 - Angular
+- SCSS
 - Python Flask
 - PostgreSQL
 
