@@ -57,19 +57,19 @@ Full Stack
 
 ## Screengrabs-Of-Application
 
-Home Page
+---- Home Page
 ![Home Page](./README_assets/home_screen.png)
 
-Sign Up Page
+---- Sign Up Page
 ![Sign Up Page](./README_assets/sign_up_page.png)
 
-Product Page
+---- Product Page
 ![Product Page](./README_assets/product_page.png)
 
-One Product Page
+---- One Product Page
 ![One Product Page](./README_assets/product_one_page.png)
 
-Cart Page
+---- Cart Page
 ![Cart Page](./README_assets/cart_page.png)
 
 ## Technical Obstacles
@@ -129,6 +129,7 @@ Backend Techniques
 Frontend Techniques
 
 - SO MANY FILES
+- Handling of Null types Javascript vs Python
 - Component & Data Binding a bit difficult to conceptualise/visualise
 - Strict Typing when modularising components (more for Forms) - i.e. the typing differences of Typescript & Angular are not apparent
 - 2 layers of imports, Standalone Modules requiring imports of import
