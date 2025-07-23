@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"cd backend && ./.venv/bin/python app.py\" \"cd frontend && bun run dev\""
+    "dev": "concurrently \"cd backend && ./.venv/bin/python main.py\" \"cd frontend && bun run dev\""
   },
   "devDependencies": {
     "@types/bun": "latest"
