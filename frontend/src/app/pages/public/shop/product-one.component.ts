@@ -6,6 +6,7 @@ import { URLS } from '../../../core/routes/PATHS';
 import { AuthService } from '../../../core/auth.service';
 import { PublicService } from '../../../core/services/public.service';
 import { SnackBarService } from '../../../shared/service/snack-bar.service';
+import { CartService } from '../../../core/services/cart.service';
 import { type Product, type Variant } from '../../../core/types/product';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -44,16 +45,17 @@ export class ProductOneComponent {
     private router: Router,
     private authService: AuthService,
     private publicService: PublicService,
+    private cartService: CartService,
     private snackBar: SnackBarService
   ) {
     this.route.paramMap.subscribe((params) => {
-      const id = Number(params.get('productId'));
-      if (!id) {
+      const productId = Number(params.get('productId'));
+      if (!productId) {
         this.snackBar.error('Invalid product ID');
         this.router.navigate(['/']);
         return;
       }
-      this.loadProduct(id);
+      this.loadProduct(productId);
     });
   }
 
@@ -97,13 +99,28 @@ export class ProductOneComponent {
       return;
     }
 
+    if (!this.selectedVariant) {
+      this.snackBar.error('Select a Design First!');
+      return;
+    }
     this.isAddingToCart = true;
+    const payload = {
+      qtyChange: this.qtyToAdd,
+      variantId: this.selectedVariant.variant_id,
+    };
 
-    // Simulate async add to cart
-    setTimeout(() => {
-      this.isAddingToCart = false;
-      this.snackBar.success('Added to cart!');
-    }, 1000);
+    this.cartService.updateCart(payload).subscribe({
+      next: (res) => {
+        this.isAddingToCart = false;
+        this.snackBar.success(`Added ${this.qtyToAdd} to cart!`);
+        this.qtyToAdd = 1;
+      },
+      error: (err) => {
+        const errArray = err.error.error;
+        this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
+        this.router.navigate([URLS.PUBLIC.SERVER]);
+      },
+    });
   }
 
   navigateToSignIn() {

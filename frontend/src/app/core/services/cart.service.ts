@@ -7,7 +7,7 @@ import { type Cart, type CartItem } from '../types/cart';
   providedIn: 'root',
 })
 export class CartService {
-  private baseCartURL = `${import.meta.env['VITE_DEV_BASE_URL']}/cart`;
+  private baseCartURL = `${import.meta.env['VITE_DEV_BASE_URL']}/cart/`;
 
   constructor(private http: HttpClient) {}
 
