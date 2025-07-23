@@ -40,7 +40,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
     if (loggedInUsername !== requestedUsername) {
       this.router.navigate([URLS.PUBLIC.USER_SHOP(requestedUsername)]);
-      console.log(loggedInUsername, requestedUsername);
+      //   console.log(loggedInUsername, requestedUsername);
       return false;
     }
 

@@ -61,14 +61,14 @@ export class SignInComponent {
     if (signInForm.valid && usernameOrEmail && password) {
       this.authService.signIn({ usernameOrEmail, password }).subscribe({
         next: (res) => {
-          console.log('Signed In with token:', res.token);
+          // console.log('Signed In with token:', res.token);
           this.snackBar.success('Sign In Successful');
           signInForm.reset();
           this.router.navigate([this.URLS.PUBLIC.HOME]);
         },
         error: (err) => {
           const errArray = err.error.error;
-          console.log('Error: ', err.error.error);
+          // console.log('Error: ', err.error.error);
           this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
         },
       });

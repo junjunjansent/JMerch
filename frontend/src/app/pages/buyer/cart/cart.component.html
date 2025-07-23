@@ -1,4 +1,4 @@
-<pre *ngIf="cart">{{ cart | json }}</pre>
+<!-- <pre *ngIf="cart">{{ cart | json }}</pre> -->
 <!-- Loading State -->
 <div *ngIf="isLoading" class="spinner-container">
   <mat-progress-spinner mode="indeterminate" />
@@ -86,9 +86,8 @@
         <td mat-cell *matCellDef="let item">
           {{ item.qty_cart }}
           <button
-            mat-icon-button
             color="primary"
-            aria-label="Add 1"
+            aria-label="Add"
             (click)="
               onQuantityChange(
                 item.product_variant_id.toString(),
@@ -96,14 +95,12 @@
               )
             "
             [disabled]="item.qty_cart >= item.qty_available"
-            matTooltip="Add 1"
           >
-            <mat-icon>add</mat-icon>
+            +
           </button>
           <button
-            mat-icon-button
             color="warn"
-            aria-label="Remove 1"
+            aria-label="Remove"
             (click)="
               onQuantityChange(
                 item.product_variant_id.toString(),
@@ -111,44 +108,41 @@
               )
             "
             [disabled]="item.qty_cart <= 1"
-            matTooltip="Remove 1"
           >
-            <mat-icon>remove</mat-icon>
+            -
           </button>
         </td>
       </ng-container>
 
-      <!-- price Each -->
+      <!-- price per item -->
       <ng-container matColumnDef="priceEach">
         <th mat-header-cell *matHeaderCellDef>PRICE (each)</th>
-        <td mat-cell *matCellDef="let item">\${{ item.price.toFixed(2) }}</td>
+        <td mat-cell *matCellDef="let item">SGD{{ item.price }}</td>
       </ng-container>
 
-      <!-- total per Item -->
+      <!-- sub total cost -->
       <ng-container matColumnDef="total">
         <th mat-header-cell *matHeaderCellDef>TOTAL</th>
         <td mat-cell *matCellDef="let item">
-          \${{ item.item_sub_total_cost.toFixed(2) }}
+          SGD{{ item.item_sub_total_cost }}
         </td>
       </ng-container>
 
-      <!-- Delete -->
+      <!-- delete items -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>DELETE</th>
         <td mat-cell *matCellDef="let item">
           <button
-            mat-icon-button
             color="warn"
-            aria-label="Remove from Cart"
+            aria-label="Remove"
             (click)="onQuantityChange(item.product_variant_id.toString(), 0)"
-            matTooltip="Remove from Cart"
           >
-            <mat-icon>delete</mat-icon>
+            Delete
           </button>
         </td>
       </ng-container>
 
-      <!-- Render Table Rows -->
+      <!-- table rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
@@ -156,7 +150,7 @@
       <tr class="total-row">
         <td colspan="5" style="text-align: right"><strong>Total:</strong></td>
         <td>
-          <strong>\${{ cart.total_cost }}</strong>
+          <strong>SGD{{ cart.total_cost }}</strong>
         </td>
         <td></td>
       </tr>
