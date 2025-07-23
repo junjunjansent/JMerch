@@ -27,6 +27,7 @@ export class CartService {
     qtySet?: number;
     variantId: number;
   }): Observable<{ cart: Cart }> {
+    console.log(data);
     return this.http.put<{ cart: Cart }>(this.baseCartURL, data);
   }
 

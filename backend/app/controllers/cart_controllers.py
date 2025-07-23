@@ -89,12 +89,12 @@ def update_cart_controller(data: dict, user_id: str ) -> dict :
     qty_set = data.get("qtySet")        # from Cart Page Buttons
     variant_id = data.get("variantId")
 
-    # validate values
-    qty_change = number_range_validator(qty_change) if qty_change else None
-    qty_set = number_range_validator(qty_set, min=0) if qty_set else None
     # quick check only qtyChange or qtySet is given (written like this to handle zeros too)
     has_qty_change = qty_change is not None
-    has_qty_set = qty_set is not None
+    has_qty_set = qty_set == 0 or qty_set is not None
+    # validate values
+    qty_change = number_range_validator(qty_change) if qty_change else None
+    qty_set = number_range_validator(qty_set, min=0) if (qty_set or qty_set == 0) else None
     if (has_qty_change and has_qty_set) or (not has_qty_change and not has_qty_set):
         raise APIError(
             status=400,

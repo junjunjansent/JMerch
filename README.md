@@ -13,9 +13,7 @@ Full Stack
 
 - [Content](#content-&-features)
 - [Application Photos](#screengrabs-of-application)
-- [Wireframes](#wireframes)
-- [Planning](#planning)
-- [Credits](#credits)
+- [Challenges](#Technical-Obstacles)
 
 ## Content
 
@@ -23,10 +21,10 @@ Full Stack
 
 #### As a user:
 
-- [ ] As a user, I want to see different products that are available on the web application
-- [ ] As a user, I want to be able to sign up for an account if I dont already have one to use more features in the web application
-- [ ] As a user, I want to be able to sign into my account if I already have one use more features in the web application
-- [ ] As a user in my account, I want to be able to view my profile details
+- [x] As a user, I want to see different products that are available on the web application
+- [x] As a user, I want to be able to sign up for an account if I dont already have one to use more features in the web application
+- [x] As a user, I want to be able to sign into my account if I already have one use more features in the web application
+- [x] As a user in my account, I want to be able to view my profile details
 - [ ] As a user in my account, I want to be able to edit my account details if I need to change them
 - [ ] As a user in my account, I want to be able to change my account password
 - [ ] As a user in my account, I can be a buyer or a seller of products:
@@ -36,9 +34,9 @@ Full Stack
 - [ ] As a buyer, I want to be able to select products allocated in one of the pre-defined categories to narrow down my search
 - [ ] As a buyer, I want to be able to search for products by name or user (or description) to find the product I am looking for
 - [ ] As a buyer, I want to be able to see what a particular other user is selling to understand their product line
-- [ ] As a buyer, I want to be able to see all product's price, variation, available quantity at a quick glance
+- [x] As a buyer, I want to be able to see all product's price, variation, available quantity at a quick glance
 - [ ] As a buyer, I want to be able to see more details of any particular product to know the prices and available quantities of the different designs
-- [ ] As a buyer, I want to be able to add a particular items to may cart
+- [x] As a buyer, I want to be able to add a particular items to may cart
 - [ ] As a buyer, I want the information in my cart to be stored for at least a few weeks in order to allow me to revisit my purchases at a later time
 - [ ] ? As a buyer, I want to be able to check out my cart and confirm my delivery address to ensure correct delivery of products to me
 - [ ] ? As a buyer, I want to be able to see my previous orders to understand my shopping history
@@ -57,7 +55,26 @@ Full Stack
 - [ ] ? As a seller, I want to be able to see the existing uncompleted orders to my store and products in order to handle the product delivery timelines.
 - [ ] ? As a seller, I want to be informed of when certain product inventories are (user-defined) low in order to better manage my inventory
 
-### To Explore
+## Screengrabs-Of-Application
+
+Home Page
+![Home Page](./README_assets/home_screen.png)
+
+Sign Up Page
+![Sign Up Page](./README_assets/sign_up_page.png)
+
+Product Page
+![Product Page](./README_assets/product_page.png)
+
+One Product Page
+![One Product Page](./README_assets/product_one_page.png)
+
+Cart Page
+![Cart Page](./README_assets/cart_page.png)
+
+## Technical Obstacles
+
+### Theories Learnt/Applied
 
 Backend Flask Techniques:
 
@@ -96,7 +113,7 @@ Frontend Angular Techniques:
 - [ ] [Pipes]
 - [ ] [Better Grasp of Observables]
 
-## Challenges
+### Challenges
 
 Backend Techniques
 

@@ -137,4 +137,4 @@ def number_range_validator(number: int | float, *,
             title="Unprocessable Content: Number Range",
             detail=f"Number expected to be in range {min} and {max}.")
     
-    return number
+    return number if number else 0

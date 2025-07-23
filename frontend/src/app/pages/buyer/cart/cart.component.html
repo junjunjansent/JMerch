@@ -87,7 +87,6 @@
           {{ item.qty_cart }}
           <button
             color="primary"
-            aria-label="Add"
             (click)="
               onQuantityChange(
                 item.product_variant_id.toString(),
@@ -100,7 +99,6 @@
           </button>
           <button
             color="warn"
-            aria-label="Remove"
             (click)="
               onQuantityChange(
                 item.product_variant_id.toString(),
@@ -134,7 +132,6 @@
         <td mat-cell *matCellDef="let item">
           <button
             color="warn"
-            aria-label="Remove"
             (click)="onQuantityChange(item.product_variant_id.toString(), 0)"
           >
             Delete
@@ -147,8 +144,10 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
       <!-- Cart Total -->
-      <tr class="total-row">
-        <td colspan="5" style="text-align: right"><strong>Total:</strong></td>
+      <tr mat-footer-row class="total-row">
+        <td colspan="5" style="text-align: right">
+          <strong>Total:</strong>
+        </td>
         <td>
           <strong>SGD{{ cart.total_cost }}</strong>
         </td>

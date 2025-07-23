@@ -15,7 +15,6 @@ import { MatIcon } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatButton } from '@angular/material/button';
 import { InfoTextCardComponent } from '../../../shared/components/info-text-card/info-text-card.component';
-import { CartService } from '../../../core/services/cart.service';
 
 @Component({
   selector: 'abt-main',
