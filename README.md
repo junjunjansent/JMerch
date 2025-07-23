@@ -9,6 +9,8 @@ Full Stack
 - Python Flask
 - PostgreSQL
 
+## Table of Contents
+
 - [Content](#content-&-features)
 - [Application Photos](#screengrabs-of-application)
 - [Challenges](#Technical-Obstacles)
