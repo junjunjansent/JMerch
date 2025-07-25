@@ -55,6 +55,15 @@ Full Stack
 - [ ] ? As a seller, I want to be able to see the existing uncompleted orders to my store and products in order to handle the product delivery timelines.
 - [ ] ? As a seller, I want to be informed of when certain product inventories are (user-defined) low in order to better manage my inventory
 
+### Features
+
+- [ ] Popup/Side Navbar
+- [ ] Library to convert between snake-case and camelCase
+- [ ] Fix mat-icons
+- [ ] Revisit services consistency and subscription of pages
+  - [ ] Public-Register > About Pages
+- [ ] Query Params for Index Products
+
 ## Screengrabs-Of-Application
 
 ---- Home Page
