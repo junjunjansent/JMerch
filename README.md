@@ -58,8 +58,10 @@ Full Stack
 ### Features
 
 - [ ] Popup/Side Navbar
-- [ ] Library to convert between snake-case and camelCase
 - [ ] Fix mat-icons
+- [ ] Library to convert between snake-case and camelCase
+  - [ ] make all IDs
+  - [ ] fix all IDs in backend to utilise a find userID via username but needs authorisation
 - [ ] Revisit services consistency and subscription of pages
   - [ ] Public-Register > About Pages
 - [ ] Query Params for Index Products
