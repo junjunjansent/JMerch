@@ -9,7 +9,7 @@
     "ng": "ng",
     "dev": "vite",
     "start": "bun run dev",
-    "build": "vite build",
+    "build": "echo '📦 Starting build...' && vite build && echo '✅ Build complete'",
     "watch": "vite build --watch",
     "test": "vitest",
     "preview": "node dist/analog/server/index.mjs"
