@@ -15,7 +15,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
 import { AppComponent } from './app/app.component';
 // controls style import
-import './assets/styles/styles.scss';
+// import './assets/styles/styles.scss';
 
 bootstrapApplication(AppComponent, {
   providers: [

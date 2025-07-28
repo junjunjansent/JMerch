@@ -9,7 +9,7 @@
     "ng": "ng",
     "dev": "vite",
     "start": "bun run dev",
-    "build": "vite build",
+    "build": "vite build --debug",
     "watch": "vite build --watch",
     "test": "vitest",
     "preview": "node dist/analog/server/index.mjs"
