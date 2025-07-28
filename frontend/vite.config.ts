@@ -25,9 +25,9 @@ export default defineConfig(({ mode }) => ({
       prerender: {
         routes: [],
       },
-      vite: {
-        inlineStylesExtension: 'scss',
-      },
+      // vite: {
+      //   inlineStylesExtension: 'scss',
+      // },
     }),
   ],
 }));
