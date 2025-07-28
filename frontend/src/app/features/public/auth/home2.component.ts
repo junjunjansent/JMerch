@@ -12,8 +12,7 @@ import { Router } from 'express';
   standalone: true,
   // imports: [RouterLink, MatCardModule, MatButtonModule],
   imports: [],
-  template: '<p>hi</p>',
-  // templateUrl: './home2.component.html',
+  templateUrl: './home2.component.html',
   // styleUrls: ['./auth.scss'],
 })
 export default class HomeComponent {
