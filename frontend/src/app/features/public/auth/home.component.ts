@@ -13,6 +13,6 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './home.component.html',
   styleUrls: ['./auth.scss'],
 })
-export class HomeComponent {
+export default class HomeComponent {
   URLS = URLS;
 }
