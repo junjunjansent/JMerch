@@ -1,0 +1,13 @@
+<mat-form-field>
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    [type]="type"
+    [required]="required"
+    [formControl]="control"
+    [attr.autocomplete]="autocomplete"
+  />
+  <mat-error class="input-errors" *ngFor="let errorMessage of errorMessages">
+    {{ errorMessage }}
+  </mat-error>
+</mat-form-field>

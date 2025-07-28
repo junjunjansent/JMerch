@@ -1,0 +1,30 @@
+<main class="page-container">
+  <section class="section-info">
+    <h1 class="title-text">Sign In</h1>
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+      <form-field-text
+        label="Username or Email"
+        [required]="true"
+        [control]="formControlFromName('usernameOrEmail')"
+      />
+      <!-- patternErrorMessage="Username can only be lowercase alphanumeric, '-', or '_'" -->
+
+      <form-field-text
+        label="Password"
+        type="password"
+        [required]="true"
+        [control]="formControlFromName('password')"
+        autocomplete="password"
+      />
+
+      <button mat-button class="submit-button" type="submit">Sign In</button>
+    </form>
+
+    <p>
+      Don't have an account? <a [routerLink]="URLS.PUBLIC.SIGN_UP">Sign Up</a>
+    </p>
+  </section>
+  <aside class="aside-img">
+    <img src="src/assets/JMerch_logo.png" alt="Logo" class="img-logo" />
+  </aside>
+</main>

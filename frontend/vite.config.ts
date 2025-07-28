@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import analog from '@analogjs/platform';
 
 // https://vitejs.dev/config/
+// cannot do inline scss styles
 export default defineConfig(({ mode }) => ({
   build: {
     target: ['es2020'],
@@ -18,9 +19,9 @@ export default defineConfig(({ mode }) => ({
       prerender: {
         routes: [],
       },
-      vite: {
-        inlineStylesExtension: 'scss',
-      },
+      // vite: {
+      //   inlineStylesExtension: 'scss',
+      // },
     }),
   ],
 }));

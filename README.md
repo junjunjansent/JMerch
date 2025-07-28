@@ -9,6 +9,9 @@ Full Stack
 - Python Flask
 - PostgreSQL
 
+- [Tips for Angular Structure](https://medium.com/@dragos.atanasoae_62577/angular-project-structure-guide-small-medium-and-large-projects-e17c361b2029)
+  - [Tips for SCSS Structure](https://medium.com/@sehban.alam/structure-your-angular-scss-like-a-pro-best-practices-real-world-examples-8da57386afdd)
+
 ## Table of Contents
 
 - [Content](#content-&-features)
