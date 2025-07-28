@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { URLS } from '../../../routes/PATHS';
+// import { URLS } from '../../../routes/PATHS';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -12,9 +12,10 @@ import { Router } from 'express';
   standalone: true,
   // imports: [RouterLink, MatCardModule, MatButtonModule],
   imports: [],
-  templateUrl: './home2.component.html',
-  styleUrls: ['./auth.scss'],
+  template: '<p>hi</p>',
+  // templateUrl: './home2.component.html',
+  // styleUrls: ['./auth.scss'],
 })
 export default class HomeComponent {
-  URLS = URLS;
+  // URLS = URLS;
 }
