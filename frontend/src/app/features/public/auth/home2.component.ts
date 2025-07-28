@@ -10,8 +10,7 @@ import { Router } from 'express';
 @Component({
   selector: 'app-home',
   standalone: true,
-  // imports: [RouterLink, MatCardModule, MatButtonModule],
-  imports: [],
+  imports: [RouterLink, MatCardModule, MatButtonModule],
   templateUrl: './home2.component.html',
   // styleUrls: ['./auth.scss'],
 })
