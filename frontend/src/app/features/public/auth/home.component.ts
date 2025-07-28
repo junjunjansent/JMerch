@@ -11,7 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [RouterLink, MatCardModule, MatButtonModule],
   templateUrl: './home.component.html',
-  // styleUrls: ['./auth.scss'],
+  styleUrls: ['./auth.scss'],
 })
 export default class HomeComponent {
   URLS = URLS;
