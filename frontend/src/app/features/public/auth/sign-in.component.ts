@@ -13,7 +13,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormFieldTextComponent } from '../../../shared/components/forms/form-field-text.component';
-import { SnackBarService } from '../../../shared/services/snack-bar.service';
 // import { AuthService } from '../../../core/auth.service';
 
 @Component({
@@ -47,8 +46,7 @@ export class SignInComponent {
   constructor(
     private fb: FormBuilder,
     // private authService: AuthService,
-    private router: Router,
-    private snackBar: SnackBarService
+    private router: Router
   ) {}
 
   formControlFromName(formControlName: string): FormControl {

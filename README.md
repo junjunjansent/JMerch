@@ -60,7 +60,7 @@ Full Stack
 
 ### Features
 
-- [ ] Fix mat-icons
+- [x] Fix mat-icons
 - [x] Fix toastbox
 - [ ] Popup/Side Navbar
 - [ ] Library to convert between snake-case and camelCase

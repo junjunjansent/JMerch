@@ -15,8 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormFieldTextComponent } from '../../../shared/components/forms/form-field-text.component';
 import { passwordsMatchValidator } from '../../../shared/utils/validator';
 // import { AuthService } from '../../../core/auth.service';
-import { SnackBarService } from '../../../shared/services/snack-bar.service';
 import { ToastrService } from 'ngx-toastr';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-sign-up',
@@ -28,6 +28,7 @@ import { ToastrService } from 'ngx-toastr';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     FormFieldTextComponent,
   ],
   templateUrl: './sign-up.component.html',
@@ -58,7 +59,6 @@ export class SignUpComponent {
     // private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    private snackBar: SnackBarService,
     private toastr: ToastrService
   ) {}
 
@@ -66,39 +66,39 @@ export class SignUpComponent {
     return this.signUpForm.get(formControlName) as FormControl;
   }
 
-  successSnackBar() {
-    this.toastr.success(`wow`, 'success', {
-      closeButton: true,
-      progressBar: true,
-      timeOut: 3000,
-    });
-  }
+  // successSnackBar() {
+  //   this.toastr.success(`wow`, 'success', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  // }
 
-  infoSnackBar() {
-    this.toastr.info(`info`, 'more information', {
-      closeButton: true,
-      progressBar: true,
-      timeOut: 3000,
-    });
-    this.toastr.show(`show`, 'more information', {
-      closeButton: true,
-      progressBar: true,
-      timeOut: 3000,
-    });
-  }
+  // infoSnackBar() {
+  //   this.toastr.info(`info`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  //   this.toastr.show(`show`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  // }
 
-  errorSnackBar() {
-    this.toastr.warning(`warning`, 'more information', {
-      closeButton: true,
-      progressBar: true,
-      timeOut: 3000,
-    });
-    this.toastr.error(`info`, 'more information', {
-      closeButton: true,
-      progressBar: true,
-      timeOut: 3000,
-    });
-  }
+  // errorSnackBar() {
+  //   this.toastr.warning(`warning`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  //   this.toastr.error(`info`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  // }
 
   onSubmit() {
     const signUpForm = this.signUpForm;
