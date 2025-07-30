@@ -60,8 +60,9 @@ Full Stack
 
 ### Features
 
-- [ ] Popup/Side Navbar
 - [ ] Fix mat-icons
+- [x] Fix toastbox
+- [ ] Popup/Side Navbar
 - [ ] Library to convert between snake-case and camelCase
   - [ ] make all IDs
   - [ ] fix all IDs in backend to utilise a find userID via username but needs authorisation

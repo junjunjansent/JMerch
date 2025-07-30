@@ -66,39 +66,39 @@ export class SignUpComponent {
     return this.signUpForm.get(formControlName) as FormControl;
   }
 
-  // successSnackBar() {
-  //   this.toastr.success(`wow`, 'success', {
-  //     closeButton: true,
-  //     progressBar: true,
-  //     timeOut: 3000,
-  //   });
-  // }
+  successSnackBar() {
+    this.toastr.success(`wow`, 'success', {
+      closeButton: true,
+      progressBar: true,
+      timeOut: 3000,
+    });
+  }
 
-  // infoSnackBar() {
-  //   this.toastr.info(`info`, 'more information', {
-  //     closeButton: true,
-  //     progressBar: true,
-  //     timeOut: 3000,
-  //   });
-  //   this.toastr.show(`show`, 'more information', {
-  //     closeButton: true,
-  //     progressBar: true,
-  //     timeOut: 3000,
-  //   });
-  // }
+  infoSnackBar() {
+    this.toastr.info(`info`, 'more information', {
+      closeButton: true,
+      progressBar: true,
+      timeOut: 3000,
+    });
+    this.toastr.show(`show`, 'more information', {
+      closeButton: true,
+      progressBar: true,
+      timeOut: 3000,
+    });
+  }
 
-  // errorSnackBar() {
-  //   this.toastr.warning(`warning`, 'more information', {
-  //     closeButton: true,
-  //     progressBar: true,
-  //     timeOut: 3000,
-  //   });
-  //   this.toastr.error(`info`, 'more information', {
-  //     closeButton: true,
-  //     progressBar: true,
-  //     timeOut: 3000,
-  //   });
-  // }
+  errorSnackBar() {
+    this.toastr.warning(`warning`, 'more information', {
+      closeButton: true,
+      progressBar: true,
+      timeOut: 3000,
+    });
+    this.toastr.error(`info`, 'more information', {
+      closeButton: true,
+      progressBar: true,
+      timeOut: 3000,
+    });
+  }
 
   onSubmit() {
     const signUpForm = this.signUpForm;
