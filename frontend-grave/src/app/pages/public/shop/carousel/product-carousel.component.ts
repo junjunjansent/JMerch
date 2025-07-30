@@ -8,7 +8,7 @@ import { ProductCardCarouselComponent } from './product-card-carousel.component'
   standalone: true,
   imports: [CommonModule, ProductCardCarouselComponent],
   templateUrl: './product-carousel.component.html',
-  styleUrls: ['./product-carousel.component.scss'],
+  // styleUrls: ['./product-carousel.component.scss'],
 })
 export class ProductCarouselComponent {
   @Input() products: Product[] = [];

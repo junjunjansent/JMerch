@@ -17,7 +17,7 @@ import { ProductCarouselComponent } from './carousel/product-carousel.component'
   selector: 'product-all',
   standalone: true,
   templateUrl: './product-all.component.html',
-  styleUrls: ['./product-all.component.scss'],
+  // styleUrls: ['./product-all.component.scss'],
   imports: [
     CommonModule,
     ProductCardVertComponent,

@@ -28,7 +28,7 @@ import { InfoTextCardComponent } from '../../../shared/components/info-text-card
     InfoTextCardComponent,
   ],
   templateUrl: './about-main.component.html',
-  styleUrls: ['./about.component.scss'],
+  // styleUrls: ['./about.component.scss'],
 })
 export class AboutMainComponent {
   userProfile!: UserProfile;

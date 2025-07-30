@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [CommonModule, MatCardModule],
   templateUrl: './info-text-card.component.html',
-  styleUrls: ['./info-text-card.component.scss'],
+  // styleUrls: ['./info-text-card.component.scss'],
 })
 export class InfoTextCardComponent {
   @Input() label = '';

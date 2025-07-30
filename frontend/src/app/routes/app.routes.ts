@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { PUBLIC_PATHS } from './PATHS';
 import { USER_PATHS } from './PATHS';
-import { HomeComponent } from '../features/public/auth/home.component';
+import HomeComponent from '../features/public/auth/home.component';
 import { SignUpComponent } from '../features/public/auth/sign-up.component';
 import { SignInComponent } from '../features/public/auth/sign-in.component';
 // import { HomeComponent } from '../../pages/public/register/home.component';

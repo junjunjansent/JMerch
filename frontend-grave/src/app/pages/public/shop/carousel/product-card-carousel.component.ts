@@ -12,7 +12,7 @@ import { URLS } from '../../../../core/routes/PATHS';
   standalone: true,
   imports: [CommonModule, MatCardModule],
   templateUrl: './product-card-carousel.component.html',
-  styleUrls: ['./product-card-carousel.component.scss'],
+  // styleUrls: ['./product-card-carousel.component.scss'],
 })
 export class ProductCardCarouselComponent {
   @Input() product!: Product;

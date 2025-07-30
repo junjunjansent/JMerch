@@ -30,7 +30,7 @@ import { SnackBarService } from '../../../shared/service/snack-bar.service';
     FormFieldTextComponent,
   ],
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./register.scss'],
+  // styleUrls: ['./register.scss'],
 })
 export class SignUpComponent {
   URLS = URLS;

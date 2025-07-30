@@ -27,7 +27,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTooltipModule,
   ],
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss'],
+  // styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent {
   cart: Cart | null = null;

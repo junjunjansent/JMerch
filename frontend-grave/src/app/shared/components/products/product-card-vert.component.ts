@@ -9,7 +9,7 @@ import { URLS } from '../../../core/routes/PATHS';
   standalone: true,
   imports: [MatCardModule],
   templateUrl: './product-card-vert.component.html',
-  styleUrls: ['./product-card-vert.component.scss'],
+  // styleUrls: ['./product-card-vert.component.scss'],
 })
 export class ProductCardVertComponent {
   URLS = URLS;

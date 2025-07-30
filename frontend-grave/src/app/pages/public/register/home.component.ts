@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [RouterLink, MatCardModule, MatButtonModule, MatIconModule],
   templateUrl: './home.component.html',
-  styleUrls: ['./register.scss'],
+  // styleUrls: ['./register.scss'],
 })
 export class HomeComponent {
   URLS = URLS;

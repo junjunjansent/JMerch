@@ -27,7 +27,7 @@ import { InfoTextCardComponent } from '../../../shared/components/info-text-card
     InfoTextCardComponent,
   ],
   templateUrl: './product-one.component.html',
-  styleUrls: ['./product-one.component.scss'],
+  // styleUrls: ['./product-one.component.scss'],
 })
 export class ProductOneComponent {
   product: Product | null = null;

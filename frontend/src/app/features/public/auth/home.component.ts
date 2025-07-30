@@ -6,15 +6,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 // import { MatIconModule } from '@angular/material/icon';
 
-// import './auth.scss';
-
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [RouterLink, MatCardModule, MatButtonModule],
   templateUrl: './home.component.html',
-  // styleUrls: ['./auth.scss'],
-  styleUrl: './auth.css',
+  styleUrls: ['./auth.css'],
+  // styleUrl: './auth.css',
 })
 export default class HomeComponent {
   URLS = URLS;
