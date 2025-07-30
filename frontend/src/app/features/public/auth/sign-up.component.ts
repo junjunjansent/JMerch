@@ -16,6 +16,7 @@ import { FormFieldTextComponent } from '../../../shared/components/forms/form-fi
 import { passwordsMatchValidator } from '../../../shared/utils/validator';
 // import { AuthService } from '../../../core/auth.service';
 import { SnackBarService } from '../../../shared/services/snack-bar.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-up',
@@ -54,37 +55,72 @@ export class SignUpComponent {
     }
   );
   constructor(
-    private fb: FormBuilder,
     // private authService: AuthService,
+    private fb: FormBuilder,
     private router: Router,
-    private snackBar: SnackBarService
+    private snackBar: SnackBarService,
+    private toastr: ToastrService
   ) {}
 
   formControlFromName(formControlName: string): FormControl {
     return this.signUpForm.get(formControlName) as FormControl;
   }
 
+  // successSnackBar() {
+  //   this.toastr.success(`wow`, 'success', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  // }
+
+  // infoSnackBar() {
+  //   this.toastr.info(`info`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  //   this.toastr.show(`show`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  // }
+
+  // errorSnackBar() {
+  //   this.toastr.warning(`warning`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  //   this.toastr.error(`info`, 'more information', {
+  //     closeButton: true,
+  //     progressBar: true,
+  //     timeOut: 3000,
+  //   });
+  // }
+
   onSubmit() {
     const signUpForm = this.signUpForm;
     const { username, password, email } = signUpForm.value;
 
-    // // angular forms and typescript validation dont seem compatible lol, do double check
-    // if (signUpForm.valid && username && password && email) {
-    //   this.authService.signUp({ username, password, email }).subscribe({
-    //     next: (res) => {
-    //       // console.log('Signed Up with token:', res.token);
-    //       this.snackBar.success('Sign Up Successful');
-    //       signUpForm.reset();
-    //       this.router.navigate([this.URLS.PUBLIC.HOME]);
-    //     },
-    //     error: (err) => {
-    //       // console.log('Error: ', err.error.error);
-    //       const errArray = err.error.error;
-    //       this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
-    //     },
-    //   });
-    // } else {
-    //   signUpForm.markAllAsTouched();
-    // }
+    // angular forms and typescript validation dont seem compatible lol, do double check
+    if (signUpForm.valid && username && password && email) {
+      //   this.authService.signUp({ username, password, email }).subscribe({
+      //     next: (res) => {
+      //       // console.log('Signed Up with token:', res.token);
+      //       this.snackBar.success('Sign Up Successful');
+      //       signUpForm.reset();
+      //       this.router.navigate([this.URLS.PUBLIC.HOME]);
+      //     },
+      //     error: (err) => {
+      //       // console.log('Error: ', err.error.error);
+      //       const errArray = err.error.error;
+      //       this.snackBar.error(`${errArray[0].title} - ${errArray[0].detail}`);
+      //     },
+      //   });
+    } else {
+      signUpForm.markAllAsTouched();
+    }
   }
 }
